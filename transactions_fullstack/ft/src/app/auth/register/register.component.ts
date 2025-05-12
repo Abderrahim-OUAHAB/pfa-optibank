@@ -32,14 +32,17 @@ export class RegisterComponent {
 
   onSubmit(): void {
     if (this.registerForm.invalid) return;
+    console.log(this.registerForm.value);
 
     this.auth.register(this.registerForm.value).subscribe({
+     
       next: () => {
         this.success = 'Compte créé';
         this.registerForm.reset();
       },
-      error: () => {
-        this.error = 'Erreur lors de l\'inscription';
+      error: err => {
+        this.error = err.error.message;
+        console.log(err);
       }
     });
   }

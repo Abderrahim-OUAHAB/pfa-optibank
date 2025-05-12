@@ -13,6 +13,7 @@ public class UserMapper {
         user.setPassword(dto.getPassword());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
+        user.setPhone(dto.getPhone());
         user.setAddress(dto.getAddress());
         user.setCity(dto.getCity());
         user.setPostalCode(dto.getPostalCode());
@@ -30,6 +31,7 @@ public class UserMapper {
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
+        dto.setPhone(user.getPhone());
         dto.setAddress(user.getAddress());
         dto.setCity(user.getCity());
         dto.setPostalCode(user.getPostalCode());

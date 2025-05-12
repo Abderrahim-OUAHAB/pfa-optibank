@@ -1,5 +1,7 @@
 package com.bank_transactions.auth.web;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,9 +26,10 @@ public class AuthController {
     @Autowired private JwtService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDto dto) {
+    public ResponseEntity<Map<String, String>> register(@RequestBody UserDto dto) {
         userService.register(dto);
-        return ResponseEntity.ok("Account created");
+     return ResponseEntity.ok(Map.of("message", "Account created"));
+
     }
 
     @PostMapping("/login")

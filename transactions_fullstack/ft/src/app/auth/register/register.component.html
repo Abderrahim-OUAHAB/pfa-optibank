@@ -1,0 +1,19 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <input formControlName="firstName" placeholder="Prénom" />
+  <input formControlName="lastName" placeholder="Nom" />
+  <input formControlName="email" placeholder="Email" type="email" />
+  <input formControlName="password" placeholder="Mot de passe" type="password" />
+  <input formControlName="phone" placeholder="Téléphone" />
+  <input formControlName="address" placeholder="Adresse" />
+  <input formControlName="city" placeholder="Ville" />
+  <input formControlName="postalCode" placeholder="Code postal" />
+  <input formControlName="country" placeholder="Pays" />
+  <input formControlName="cin" placeholder="CIN" />
+  <input formControlName="nationality" placeholder="Nationalité" />
+  <input formControlName="profession" placeholder="Profession" />
+  <input formControlName="monthlyIncome" placeholder="Revenu mensuel" type="number" />
+  <input formControlName="birthDate" placeholder="Date de naissance" type="date" />
+  <button type="submit">Créer un compte</button>
+  <p *ngIf="success">{{ success }}</p>
+  <p *ngIf="error">{{ error }}</p>
+</form>

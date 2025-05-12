@@ -4,7 +4,8 @@ import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -25,6 +26,7 @@ export class LoginComponent {
         localStorage.setItem('token', res.token);
       },
       error: err => {
+        console.log(err);
         this.error = 'Email ou mot de passe incorrect';
       }
     });

@@ -1,56 +1,60 @@
-.navbar {
-  background: linear-gradient(360deg, rgb(29, 29, 29), #5646e7); 
-  padding: 15px 20px;
-  color: white;
+/* Styles pour la toolbar */
+.custom-toolbar {
   position: sticky;
   top: 0;
   z-index: 100;
-
-  .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-  }
-
-  .navbar-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-
-    li {
-      display: inline;
-    }
-
-    a {
-      color: white;
-      text-decoration: none;
-      font-size: 16px;
-      padding: 8px 16px;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: #2f2249;
-      }
-    }
-  }
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-@media (max-width: 768px) {
-  .navbar-links {
-    display: none;
-  }
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-right: 16px;
+  cursor: pointer;
+}
 
-  .navbar-container {
-    justify-content: space-between;
-  }
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 1px solid white;
+}
+
+.app-name {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.menu-spacer {
+  flex: 1 1 auto;
+}
+
+/* Styles pour le menu mobile */
+.mobile-menu-button {
+  margin-right: 8px;
+}
+
+/* Styles pour les liens */
+.desktop-menu a {
+  margin: 0 8px;
+  color: white;
+}
+
+.desktop-menu a mat-icon {
+  margin-right: 5px;
+}
+
+/* Styles pour le sidenav */
+mat-sidenav {
+  width: 250px;
+  background: linear-gradient(180deg, rgb(46, 45, 45), #5646e7);
+}
+
+mat-nav-list a {
+  color: white;
+}
+
+mat-nav-list mat-icon {
+  margin-right: 10px;
 }

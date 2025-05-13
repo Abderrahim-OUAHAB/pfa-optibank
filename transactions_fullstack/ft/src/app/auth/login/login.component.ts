@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   loginForm: FormGroup;
   error = '';
-
+  users:any[]=[];
+  type:string="USER";
   constructor(private fb: FormBuilder, private auth: AuthService,private toastr: ToastrService,private router: Router ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -38,4 +39,7 @@ export class LoginComponent {
       }
     });
   }
+  getRole(event:any){
+  this.type=event.value;
+}
 }

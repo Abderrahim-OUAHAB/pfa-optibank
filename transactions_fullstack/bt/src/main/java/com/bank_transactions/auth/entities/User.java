@@ -29,6 +29,8 @@ public class User {
     private LocalDate birthDate;
     @Enumerated(EnumType.STRING)
     private Status status=Status.PENDING;
+    @Enumerated(EnumType.STRING)
+    private Role role=Role.USER;
 
 public enum Status {
     PENDING,       
@@ -38,4 +40,10 @@ public enum Status {
 
 
 }
+
+public enum Role {
+    USER,
+    ADMIN
+}
+
 }

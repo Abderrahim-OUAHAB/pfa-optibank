@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.bank_transactions.auth.dtos.UserDto;
 import com.bank_transactions.auth.entities.User;
+import com.bank_transactions.auth.entities.User.Role;
+import com.bank_transactions.auth.entities.User.Status;
 import com.bank_transactions.auth.exceptions.EmailAlreadyExistsException;
 import com.bank_transactions.auth.mappers.UserMapper;
 import com.bank_transactions.auth.repositories.UserRepository;
@@ -31,4 +33,19 @@ public class UserService {
             .map(user -> passwordEncoder.matches(rawPassword, user.getPassword()))
             .orElse(false);
     }
+
+    public boolean userExists(String email) {
+    return userRepo.existsById(email);
+}
+
+public void registerAdmin(UserDto dto) {
+    if (userRepo.existsById(dto.getEmail())) {
+        throw new EmailAlreadyExistsException();
+    }
+    User user = userMapper.toEntity(dto);
+    user.setPassword(passwordEncoder.encode(dto.getPassword()));
+    user.setRole(Role.ADMIN); // Ajoutez ce champ à votre entité User
+    user.setStatus(Status.APPROVED);
+    userRepo.save(user);
+}
 }

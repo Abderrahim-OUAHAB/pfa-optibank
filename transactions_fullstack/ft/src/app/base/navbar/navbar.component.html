@@ -1,11 +1,68 @@
-<nav class="navbar">
-  <div class="navbar-container">
-    <a routerLink="/" class="logo"><span style="display: flex;align-items: center;"><img src="assets/pic.png" style="width: 50px; height: 50px;border-radius: 50%;margin-right: 10px;border:1px solid white;"> OPTIBANK </span></a>
-    <ul class="navbar-links">
-      <li *ngIf="token"><a routerLink="/home" ><i class="fa fa-home" aria-hidden="true" style="margin-right: 5px;"></i>Accueil</a></li>
-      <li *ngIf="!token"><a routerLink="/register"><i class="fa fa-user" aria-hidden="true"style="margin-right: 5px;"  ></i> S'inscrire</a></li>
-      <li *ngIf="!token"><a routerLink="/"><i class="fa fa-sign-in" aria-hidden="true" style="margin-right: 5px;"></i>Se connecter</a></li>
-      <li *ngIf="token"><a><i class="fa fa-sign-out" aria-hidden="true" style="margin-right: 5px;"></i><app-logout></app-logout></a></li>
-    </ul>
-  </div>
-</nav>
+<div>
+  <mat-toolbar class="custom-toolbar" style="background: linear-gradient(180deg, rgb(46, 45, 45), #5646e7);">
+    <mat-toolbar-row>
+      <!-- Bouton menu mobile -->
+      <button mat-icon-button (click)="sidenav.toggle()" class="mobile-menu-button" fxShow fxHide.gt-sm>
+        <mat-icon>menu</mat-icon>
+      </button>
+      
+      <!-- Logo et nom -->
+      <span class="logo-container" routerLink="/">
+        <img src="assets/pic.png" alt="OPTIBANK" class="logo">
+        <span class="app-name" style="color: white;">OPTIBANK</span>
+      </span>
+      
+      <span class="menu-spacer"></span>
+      
+      <!-- Menu desktop -->
+      <div class="desktop-menu" fxShow fxHide.lt-md>
+        <a *ngIf="isAuthenticated" routerLink="/home" mat-button>
+          <mat-icon>home</mat-icon> Accueil
+        </a>
+        
+        <a *ngIf="!isAuthenticated" routerLink="/register" mat-button>
+          <mat-icon>how_to_reg</mat-icon> S'inscrire
+        </a>
+        
+        <a *ngIf="!isAuthenticated" routerLink="/" mat-button>
+          <mat-icon>login</mat-icon> Se connecter
+        </a>
+        
+        <a *ngIf="isAuthenticated" mat-button (click)="logout()">
+          <mat-icon>logout</mat-icon> Déconnexion
+        </a>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <!-- Menu mobile -->
+  <mat-sidenav-container fxFlexFill>
+    <mat-sidenav #sidenav mode="over" fxLayout="column">
+      <mat-nav-list>
+        <a (click)="sidenav.toggle()" mat-list-item>
+          <mat-icon>close</mat-icon> Fermer
+        </a>
+        
+        <a *ngIf="isAuthenticated" routerLink="/home" mat-list-item (click)="sidenav.toggle()">
+          <mat-icon>home</mat-icon> Accueil
+        </a>
+        
+        <a *ngIf="!isAuthenticated" routerLink="/register" mat-list-item (click)="sidenav.toggle()">
+          <mat-icon>how_to_reg</mat-icon> S'inscrire
+        </a>
+        
+        <a *ngIf="!isAuthenticated" routerLink="/" mat-list-item (click)="sidenav.toggle()">
+          <mat-icon>login</mat-icon> Se connecter
+        </a>
+        
+        <a *ngIf="isAuthenticated" mat-list-item (click)="logout(); sidenav.toggle()">
+          <mat-icon>logout</mat-icon> Déconnexion
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    
+    <mat-sidenav-content fxFlexFill>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

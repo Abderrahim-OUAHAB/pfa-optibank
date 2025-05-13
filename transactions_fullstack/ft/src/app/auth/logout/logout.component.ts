@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-logout',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
   `
 })
 export class LogoutComponent {
-  constructor(private authService: AuthService,private router:Router) {}
+  constructor(private authService: AuthService,private router:Router,private toastr: ToastrService) {}
 
   onLogout() {
     // Récupérer le token depuis le stockage local/session
@@ -22,6 +23,7 @@ export class LogoutComponent {
           // Supprimer le token du stockage local
           localStorage.removeItem('token');
           // Rediriger vers la page de login
+          this.toastr.success('Déconnexion reussie', 'Success');
           this.router.navigate(['/']);
         },
         error: (err) => {

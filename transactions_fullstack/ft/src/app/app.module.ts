@@ -10,6 +10,11 @@ import { FooterComponent } from './base/footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { LogoutComponent } from './auth/logout/logout.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +28,11 @@ import { LogoutComponent } from './auth/logout/logout.component';
     HttpClientModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    MatRadioModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
     ToastrModule.forRoot({
           timeOut: 3000,
           positionClass: 'toast-top-right',

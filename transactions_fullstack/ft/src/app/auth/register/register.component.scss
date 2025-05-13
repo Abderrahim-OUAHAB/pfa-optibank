@@ -1,10 +1,12 @@
 .register {
   width: 70%;
   margin: 70px auto;
-  padding: 30px;
+  padding: 60px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+   border: 1px solid #5646e7;
+   
 }
 
 .registhead {
@@ -15,7 +17,7 @@
 .registhead h2 {
   background-color: #5646e7;
   padding: 10px 40px;
-  border-radius: 30px;
+  border-radius: 10px;
   font-size: 28px;
   color: white;
 }
@@ -72,20 +74,4 @@ button {
     width: 100%;
     font-size: 14px;
   }
-}
-.toast-success {
-  background-color: #28a745;
-  color: white;
-}
-.toast-error {
-  background-color: #dc3545;
-  color: white;
-}
-.toast-info {
-  background-color: #17a2b8;
-  color: white;
-}
-.toast-warning {
-  background-color: #ffc107;
-  color: black;
 }

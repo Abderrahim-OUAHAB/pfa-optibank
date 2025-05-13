@@ -2,6 +2,9 @@ package com.bank_transactions.auth.dtos;
 
 import java.time.LocalDate;
 
+import com.bank_transactions.auth.entities.User.Role;
+import com.bank_transactions.auth.entities.User.Status;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +27,6 @@ public class UserDto {
     private String profession;
     private double monthlyIncome;
     private LocalDate birthDate;
+    private Status status=Status.PENDING;
+    private Role role=Role.USER;
 }

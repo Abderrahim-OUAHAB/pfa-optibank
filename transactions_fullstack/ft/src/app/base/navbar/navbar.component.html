@@ -1,36 +1,66 @@
 <div>
-  <mat-toolbar class="custom-toolbar" style="background: linear-gradient(180deg, rgb(46, 45, 45), #5646e7);">
+  <!-- Toolbar principale -->
+  <mat-toolbar class="custom-toolbar" [style.background]="'linear-gradient(180deg, rgb(46, 45, 45), #5646e7)'">
     <mat-toolbar-row>
-      <!-- Bouton menu mobile -->
+      <!-- Menu mobile -->
       <button mat-icon-button (click)="sidenav.toggle()" class="mobile-menu-button" fxShow fxHide.gt-sm>
         <mat-icon>menu</mat-icon>
       </button>
       
-      <!-- Logo et nom -->
-      <span class="logo-container" routerLink="/">
+      <!-- Logo + Nom -->
+      <span class="logo-container" *ngIf="authState.isAuthenticated" routerLink="/home">
         <img src="assets/pic.png" alt="OPTIBANK" class="logo">
-        <span class="app-name" style="color: white;">OPTIBANK</span>
+        <span class="app-name">OPTIBANK</span>
       </span>
-      
+      <span class="logo-container" *ngIf="!authState.isAuthenticated" routerLink="/">
+        <img src="assets/pic.png" alt="OPTIBANK" class="logo">
+        <span class="app-name">OPTIBANK</span>
+      </span> 
       <span class="menu-spacer"></span>
       
       <!-- Menu desktop -->
       <div class="desktop-menu" fxShow fxHide.lt-md>
-        <a *ngIf="isAuthenticated" routerLink="/home" mat-button>
+        <!-- Liens communs -->
+        <a *ngIf="authState.isAuthenticated" routerLink="/home" mat-button>
           <mat-icon>home</mat-icon> Accueil
         </a>
         
-        <a *ngIf="!isAuthenticated" routerLink="/register" mat-button>
-          <mat-icon>how_to_reg</mat-icon> S'inscrire
-        </a>
+        <!-- Liens Admin -->
+        <ng-container *ngIf="authState.role === 'ADMIN'">
+         
+          <a routerLink="/admin/users" mat-button>
+            <mat-icon>people</mat-icon> Utilisateurs
+          </a>
+        </ng-container>
         
-        <a *ngIf="!isAuthenticated" routerLink="/" mat-button>
-          <mat-icon>login</mat-icon> Se connecter
-        </a>
+        <!-- Liens Client -->
+        <ng-container *ngIf="authState.role === 'USER'">
         
-        <a *ngIf="isAuthenticated" mat-button (click)="logout()">
-          <mat-icon>logout</mat-icon> Déconnexion
-        </a>
+          <a routerLink="/transactions" mat-button>
+            <mat-icon>payments</mat-icon> Transactions
+          </a>
+        </ng-container>
+        
+        <!-- Liens non authentifiés -->
+        <ng-container *ngIf="!authState.isAuthenticated">
+          <a routerLink="/register" mat-button>
+            <mat-icon>how_to_reg</mat-icon> S'inscrire
+          </a>
+          <a routerLink="/login" mat-button>
+            <mat-icon>login</mat-icon> Connexion
+          </a>
+        </ng-container>
+        
+        <!-- Menu utilisateur -->
+        <button *ngIf="authState.isAuthenticated" mat-button >
+          <mat-icon>account_circle</mat-icon> Mon compte
+        </button>
+       
+         
+          <button mat-button *ngIf="authState.isAuthenticated"(click)="logout()">
+            <mat-icon>logout</mat-icon> Déconnexion
+          </button>
+     
       </div>
     </mat-toolbar-row>
   </mat-toolbar>
@@ -43,21 +73,50 @@
           <mat-icon>close</mat-icon> Fermer
         </a>
         
-        <a *ngIf="isAuthenticated" routerLink="/home" mat-list-item (click)="sidenav.toggle()">
+        <!-- Liens communs -->
+        <a *ngIf="authState.isAuthenticated" routerLink="/home" mat-list-item (click)="sidenav.toggle()">
           <mat-icon>home</mat-icon> Accueil
         </a>
         
-        <a *ngIf="!isAuthenticated" routerLink="/register" mat-list-item (click)="sidenav.toggle()">
-          <mat-icon>how_to_reg</mat-icon> S'inscrire
-        </a>
+        <!-- Liens Admin -->
+        <ng-container *ngIf="authState.role === 'ADMIN'">
+          <a routerLink="/admin/dashboard" mat-list-item (click)="sidenav.toggle()">
+            <mat-icon>dashboard</mat-icon> Dashboard
+          </a>
+          <a routerLink="/admin/users" mat-list-item (click)="sidenav.toggle()">
+            <mat-icon>people</mat-icon> Utilisateurs
+          </a>
+        </ng-container>
         
-        <a *ngIf="!isAuthenticated" routerLink="/" mat-list-item (click)="sidenav.toggle()">
-          <mat-icon>login</mat-icon> Se connecter
-        </a>
+        <!-- Liens Client -->
+        <ng-container *ngIf="authState.role === 'USER'">
+          <a routerLink="/accounts" mat-list-item (click)="sidenav.toggle()">
+            <mat-icon>account_balance</mat-icon> Comptes
+          </a>
+          <a routerLink="/transactions" mat-list-item (click)="sidenav.toggle()">
+            <mat-icon>payments</mat-icon> Transactions
+          </a>
+        </ng-container>
         
-        <a *ngIf="isAuthenticated" mat-list-item (click)="logout(); sidenav.toggle()">
-          <mat-icon>logout</mat-icon> Déconnexion
-        </a>
+        <!-- Liens non authentifiés -->
+        <ng-container *ngIf="!authState.isAuthenticated">
+          <a routerLink="/register" mat-list-item (click)="sidenav.toggle()">
+            <mat-icon>how_to_reg</mat-icon> S'inscrire
+          </a>
+          <a routerLink="/login" mat-list-item (click)="sidenav.toggle()">
+            <mat-icon>login</mat-icon> Connexion
+          </a>
+        </ng-container>
+        
+        <!-- Menu utilisateur -->
+        <ng-container *ngIf="authState.isAuthenticated">
+          <a routerLink="/profile" mat-list-item (click)="sidenav.toggle()">
+            <mat-icon>person</mat-icon> Profil
+          </a>
+          <a mat-list-item (click)="logout(); sidenav.toggle()">
+            <mat-icon>logout</mat-icon> Déconnexion
+          </a>
+        </ng-container>
       </mat-nav-list>
     </mat-sidenav>
     

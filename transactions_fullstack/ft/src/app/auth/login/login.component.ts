@@ -17,21 +17,23 @@ export class LoginComponent {
   constructor(private fb: FormBuilder, private auth: AuthService,private toastr: ToastrService,private router: Router ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+       type: ['USER', Validators.required]
     });
   }
 
   onSubmit(): void {
     if (this.loginForm.invalid) return;
 
-    this.auth.login(this.loginForm.value).subscribe({
+    const loginData = {
+      ...this.loginForm.value,
+      role: this.type 
+    };
+
+    this.auth.login(loginData).subscribe({
       next: res => {
-        localStorage.setItem('token', res.token);
-
-                this.router.navigate(['/home']);
-
-        this.toastr.success('Connexion reussie', 'Success');
-
+        this.toastr.success('Connexion réussie', 'Success');
+        this.router.navigate(['/home']);
       },
       error: err => {
         console.log(err);
@@ -39,7 +41,10 @@ export class LoginComponent {
       }
     });
   }
-  getRole(event:any){
-  this.type=event.value;
-}
+
+  getRole(event: any) {
+    this.type = event.value;
+    console.log(this.type);
+    this.loginForm.patchValue({ type: event.value });
+  }
 }

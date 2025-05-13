@@ -11,7 +11,10 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8087/auth';
-  private authStatus = new BehaviorSubject<boolean>(this.hasToken());
+  private authStatus = new BehaviorSubject<{isAuthenticated: boolean, role: string}>({
+    isAuthenticated: this.hasToken(),
+    role: this.getUserRole()
+  });
   authStatus$ = this.authStatus.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -20,12 +23,20 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  login(data: LoginRequest): Observable<any> {
+  private getUserRole(): string {
+    return localStorage.getItem('role') || '';
+  }
+
+  login(data: {email: string, password: string, type: string}): Observable<any> {
     return this.http.post(`${this.baseUrl}/login`, data).pipe(
       tap((response: any) => {
         if (response.token) {
           localStorage.setItem('token', response.token);
-          this.authStatus.next(true);
+          localStorage.setItem('role', response.role);
+          this.authStatus.next({
+            isAuthenticated: true,
+            role: response.role
+          });
         }
       })
     );
@@ -43,12 +54,17 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/logout`, {}, { headers }).pipe(
       tap(() => {
         localStorage.removeItem('token');
-        this.authStatus.next(false);
+        localStorage.removeItem('role');
+        this.authStatus.next({
+            isAuthenticated: false,
+            role:''
+          });
         this.router.navigate(['/']);
       })
     );
   }
 
+  
   getToken(): string | null {
     return localStorage.getItem('token');
   }

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bank_transactions.auth.dtos.AuthRequestDto;
 import com.bank_transactions.auth.dtos.JwtResponseDto;
 import com.bank_transactions.auth.dtos.UserDto;
+import com.bank_transactions.auth.entities.User;
 import com.bank_transactions.auth.exceptions.InvalidCredentialsException;
+import com.bank_transactions.auth.repositories.UserRepository;
 import com.bank_transactions.auth.security.JwtService;
 import com.bank_transactions.auth.services.UserService;
 
@@ -26,7 +28,7 @@ public class AuthController {
 
     @Autowired private UserService userService;
     @Autowired private JwtService jwtService;
-
+    @Autowired private UserRepository userRepo;
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody UserDto dto) {
         userService.register(dto);
@@ -37,8 +39,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDto>login(@RequestBody AuthRequestDto request) {
         if (userService.validateCredentials(request.getEmail(), request.getPassword())) {
+             User user = userRepo.findByEmail(request.getEmail()).orElseThrow();
             String token = jwtService.generateToken(request.getEmail());
-            return ResponseEntity.ok(new JwtResponseDto(token));
+            return ResponseEntity.ok(new JwtResponseDto(token,user.getRole().toString()));
         }
         throw new InvalidCredentialsException();
     }

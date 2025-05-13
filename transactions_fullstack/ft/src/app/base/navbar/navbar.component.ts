@@ -1,9 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { AuthService } from '../../auth/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/auth/services/auth.service';
-
-
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -11,21 +9,26 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 })
 export class NavbarComponent implements OnInit {
   @ViewChild('sidenav') sidenav!: MatSidenav;
-  isAuthenticated: boolean = false;
+  authState: {isAuthenticated: boolean, role: string} = {
+    isAuthenticated: false,
+    role: ''
+  };
 
-  constructor(private authService: AuthService,private toastr: ToastrService) {}
+  constructor(private authService: AuthService,private toaster: ToastrService) {}
 
   ngOnInit() {
-    this.authService.authStatus$.subscribe((authenticated: boolean) => {
-      this.isAuthenticated = authenticated;
+    this.authService.authStatus$.subscribe(state => {
+      this.authState = state;
     });
   }
 
   logout() {
-    const token = this.authService.getToken();
+    const token = localStorage.getItem('token');
     if (token) {
       this.authService.logout(token).subscribe();
-      this.toastr.success('Déconnexion reussie', 'Success');
+      this.toaster.success('Déconnexion reussie', 'Success');
+      
+
     }
   }
 }

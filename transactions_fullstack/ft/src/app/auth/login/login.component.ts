@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   error = '';
 
-  constructor(private fb: FormBuilder, private auth: AuthService) {
+  constructor(private fb: FormBuilder, private auth: AuthService,private toastr: ToastrService,private router: Router ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -24,6 +26,11 @@ export class LoginComponent {
     this.auth.login(this.loginForm.value).subscribe({
       next: res => {
         localStorage.setItem('token', res.token);
+
+                this.router.navigate(['/home']);
+
+        this.toastr.success('Connexion reussie', 'Success');
+
       },
       error: err => {
         console.log(err);

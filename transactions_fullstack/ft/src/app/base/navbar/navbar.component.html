@@ -1,12 +1,11 @@
 <nav class="navbar">
   <div class="navbar-container">
-    <a routerLink="/" class="logo">OptiBank</a>
+    <a routerLink="/" class="logo"><span style="display: flex;align-items: center;"><img src="assets/pic.png" style="width: 50px; height: 50px;border-radius: 50%;margin-right: 10px;border:1px solid white;"> OPTIBANK </span></a>
     <ul class="navbar-links">
-      <li><a routerLink="/">Accueil</a></li>
-      <li><a routerLink="/services">Services</a></li>
-      <li><a routerLink="/about">À propos</a></li>
-      <li><a routerLink="/login">Se connecter</a></li>
-      <li><a routerLink="/register">S'inscrire</a></li>
+      <li *ngIf="token"><a routerLink="/home" ><i class="fa fa-home" aria-hidden="true" style="margin-right: 5px;"></i>Accueil</a></li>
+      <li *ngIf="!token"><a routerLink="/register"><i class="fa fa-user" aria-hidden="true"style="margin-right: 5px;"  ></i> S'inscrire</a></li>
+      <li *ngIf="!token"><a routerLink="/"><i class="fa fa-sign-in" aria-hidden="true" style="margin-right: 5px;"></i>Se connecter</a></li>
+      <li *ngIf="token"><a><i class="fa fa-sign-out" aria-hidden="true" style="margin-right: 5px;"></i><app-logout></app-logout></a></li>
     </ul>
   </div>
 </nav>

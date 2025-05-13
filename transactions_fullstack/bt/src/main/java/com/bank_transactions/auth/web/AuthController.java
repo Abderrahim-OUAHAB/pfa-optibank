@@ -1,12 +1,14 @@
 package com.bank_transactions.auth.web;
 
 import java.util.Map;
+import org.springframework.security.core.Authentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,5 +41,17 @@ public class AuthController {
             return ResponseEntity.ok(new JwtResponseDto(token));
         }
         throw new InvalidCredentialsException();
+    }
+
+     @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout(
+            @RequestHeader(name = "Authorization") String authHeader,
+            Authentication authentication) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            // In a real implementation, you might want to blacklist the token here
+            return ResponseEntity.ok(Map.of("message", "Logout successful"));
+        }
+        return ResponseEntity.badRequest().body(Map.of("message", "Invalid token"));
     }
 }

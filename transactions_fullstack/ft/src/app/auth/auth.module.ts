@@ -11,17 +11,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   imports: [
     CommonModule,
     AuthRoutingModule,
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
@@ -29,14 +27,7 @@ import { ToastrModule } from 'ngx-toastr';
     MatButtonModule,
     MatCardModule,
     MatDatepickerModule,
-    MatNativeDateModule,
-     ToastrModule.forRoot({
-             timeOut: 5000,
-          positionClass: 'toast-bottom-right',
-          preventDuplicates: true,
-        }
-        )
-    
+    MatNativeDateModule    
   ]
 })
 export class AuthModule { }

@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app, origins=["http://localhost:4200"])
 
 # Prompt
-PROMPT_TEMPLATE = """Vous êtes RespoBot, un assistant d'urgence spécialisé dans les catastrophes. Votre mission est de donner des réponses claires, fiables, directes et localisées.
+PROMPT_TEMPLATE = PROMPT_TEMPLATE = """Vous êtes BANBot, un assistant spécialisé pour les clients bancaires. Votre mission est de fournir des réponses claires et précises sur les services bancaires.
 
 Contexte:
 {context}
@@ -21,20 +21,22 @@ Question:
 {question}
 
 Règles strictes:
-1. Si la question est une urgence (brûlure, crise cardiaque, inconscience...), commencez par "PROCÉDURE D'URGENCE :" puis dites les procsédures de secours ,s'ils ne le sont pas indiqués dans le contexte , repondez toi meme.
-2. Utilisez des phrases brèves. Maximum 3 phrases.
-3. Si possible, ajoutez un numéro d'urgence du maroc.
-4. Toujours dire "Appelez le 15 (SAMU)" ou "le 19 (Police)" si la vie est en danger.
-5. Si l'information ne vient pas des documents, reformulez une réponse fiable basée sur les bonnes pratiques de premiers secours.
-6. N'inventez jamais une source.
-7. Répondez dans la langue du demandeur si identifiable.
-8. Régler le langage et l'accent selon la langue du demandeur.
-9. Réspondez en anglais si la langue du demandeur est autre que français ou arabe.
-10. Réspondez en arabe si la langue du demandeur est arabe.
-11. Organiser bien vos phrases et vos paragraphes , sauter les lignes etc .
+1. Répondez de manière professionnelle et courtoise
+2. Fournissez des informations exactes sur les produits/services bancaires
+3. Pour les urgences (carte bloquée, fraude...), indiquez immédiatement le numéro dédié
+4. Pour les localisations, proposez toujours l'agence la plus proche
+5. Structurez bien vos réponses avec des paragraphes clairs
+6. Donnez les numéros de contact appropriés
+7. Si la question concerne un problème technique, orientez vers le service client
+8. Pour les questions complexes, proposez un rendez-vous en agence
+
+Exemples de réponses:
+- Pour une carte perdue: "Veuillez immédiatement bloquer votre carte au 0 892 705 705"
+- Pour un virement: "Vous pouvez effectuer un virement via votre application mobile ou en agence"
+- Pour un prêt: "Nos conseillers peuvent vous proposer différentes solutions de financement"
 
 Objectif :
-Réduire le risque vital en quelques secondes. Toujours inciter à appeler les secours ou consulter un médecin.
+Fournir une assistance bancaire de qualité en toutes circonstances.
 """
 
 prompt = PromptTemplate(
@@ -62,34 +64,58 @@ qa_chain = ConversationalRetrievalChain.from_llm(
 )
 
 # Fonction Geoapify
-def find_nearest_hospital(lat, lon):
-    api_key = os.getenv("GEOAPIFY_API_KEY")
-    url = (
-        f"https://api.geoapify.com/v2/places?"
-        f"categories=healthcare.hospital&"
-        f"filter=circle:{lon},{lat},5000&"
-        f"bias=proximity:{lon},{lat}&"
-        f"limit=1&"
-        f"apiKey={api_key}"
-    )
+def find_nearest_bank(lat, lon):
+    api_key = os.getenv("GEOAPIFY_API_KEY") or "1eaa80850f9f47e28a45b23f50424cd2"
+    url = f"https://api.geoapify.com/v2/places?categories=service.financial&filter=circle:{lon},{lat},5000&bias=proximity:{lon},{lat}&limit=1&apiKey={api_key}"
+    
     try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            data = response.json()
-            features = data.get("features", [])
-            if features:
-                hospital = features[0]
-                props = hospital.get("properties", {})
-                name = props.get("name", "Hôpital sans nom")
-                address = props.get("formatted", "Adresse inconnue")
-                maps_link = f"https://www.google.com/maps/search/?api=1&query={lat},{lon}"
-                return f"\n\nHôpital le plus proche : {name}, {address}. Voir sur la carte : {maps_link}"
-            else:
-                return "\n\nAucun hôpital trouvé dans un rayon de 5 km."
-        else:
-            return "\n\nErreur Geoapify lors de la récupération de l'hôpital."
-    except Exception:
-        return "\n\nErreur lors de la recherche avec Geoapify."
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        data = response.json()
+
+        if not data.get("features"):
+            return "\n\nAucune agence bancaire trouvée dans un rayon de 5 km."
+
+        feature = data["features"][0]
+        props = feature.get("properties", {})
+        
+        bank_info = {
+            "name": props.get("name", "Agence bancaire"),
+            "address": props.get("formatted", "Adresse non disponible"),
+            "phone": props.get("contact", {}).get("phone"),
+            "opening_hours": props.get("opening_hours", {}).get("text"),
+            "distance": props.get("distance", 0),  # en mètres
+            "coordinates": feature.get("geometry", {}).get("coordinates", [])
+        }
+
+        # Construction du message
+        result = "\n\nAGENCE BANCAIRE LA PLUS PROCHE :"
+        result += f"\n🏦 {bank_info['name']}"
+        result += f"\n📍 {bank_info['address']}"
+        
+        if bank_info['phone']:
+            result += f"\n📞 {bank_info['phone']}"
+            
+        if bank_info['opening_hours']:
+            result += f"\n🕒 Horaires: {bank_info['opening_hours']}"
+            
+        if bank_info['coordinates']:
+            lon, lat = bank_info['coordinates']
+            maps_link = f"https://www.google.com/maps/search/?api=1&query={lat},{lon}"
+            result += f"\n🗺️ Voir sur la carte: {maps_link}"
+            
+        result += f"\n📏 Distance: {bank_info['distance']} mètres"
+        
+        result += "\n\nℹ️ En cas d'urgence (carte perdue/volée): 0 892 705 705 (24h/24)"
+
+        return result
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erreur API Geoapify: {str(e)}")
+        return "\n\nService de localisation temporairement indisponible"
+    except Exception as e:
+        print(f"Erreur inattendue: {str(e)}")
+        return "\n\nErreur lors de la recherche d'agences bancaires"
 
 @app.route('/init', methods=['POST'])
 def initialize_data():
@@ -98,6 +124,8 @@ def initialize_data():
         return jsonify({"status": "success", "message": "Données chargées avec succès"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+    
+    
 @app.route('/ask', methods=['POST'])
 def ask():
     data = request.get_json()
@@ -129,9 +157,10 @@ def ask():
                     lat = float(lat)
                     lon = float(lon)
                     if lat != 0 and lon != 0:
-                        hospital_info = find_nearest_hospital(lat, lon)
-                        if hospital_info:
-                            answer += str(hospital_info)
+                        # Dans la fonction ask(), remplacez hospital_info par:
+                        bank_info = find_nearest_bank(lat, lon)
+                        if bank_info:
+                            answer += str(bank_info)
             except (TypeError, ValueError) as e:
                 print(f"Erreur de conversion de coordonnées: {str(e)}")
 
@@ -167,69 +196,7 @@ def ask():
             "details": str(e)
         }), 500
 
-def find_nearest_hospital(lat, lon):
-    api_key = os.getenv("GEOAPIFY_API_KEY") or "1eaa80850f9f47e28a45b23f50424cd2"
-    url = f"https://api.geoapify.com/v2/places?categories=healthcare.hospital&filter=circle:{lon},{lat},5000&bias=proximity:{lon},{lat}&limit=1&apiKey={api_key}"
-    
-    try:
-        response = requests.get(url, timeout=5)
-        response.raise_for_status()
-        data = response.json()
 
-        if not data.get("features"):
-            return "\n\nAucun hôpital trouvé dans un rayon de 5 km."
-
-        feature = data["features"][0]
-        props = feature.get("properties", {})
-        raw_details = props.get("datasource", {}).get("raw", {})
-        contact = props.get("contact", {})
-
-        # Extraction des informations clés
-        hospital_info = {
-            "name": props.get("name", "Établissement médical"),
-            "address": props.get("formatted", "Adresse non disponible"),
-            "phone": contact.get("phone") or raw_details.get("phone"),
-            "emergency": raw_details.get("emergency") == "yes",
-            "website": props.get("website") or raw_details.get("website"),
-            "distance": props.get("distance", 0),  # en mètres
-            "coordinates": feature.get("geometry", {}).get("coordinates", [])
-        }
-
-        # Construction du message
-        result = "\n\nÉTABLISSEMENT MÉDICAL PROCHE :"
-        result += f"\n🏥 {hospital_info['name']}"
-        
-        if hospital_info['emergency']:
-            result += " (Service d'urgence disponible)"
-            
-        result += f"\n📍 {hospital_info['address']}"
-        
-        if hospital_info['phone']:
-            result += f"\n📞 {hospital_info['phone']}"
-            
-        if hospital_info['website']:
-            result += f"\n🌐 {hospital_info['website']}"
-            
-        if hospital_info['coordinates']:
-            lon, lat = hospital_info['coordinates']
-            maps_link = f"https://www.google.com/maps/search/?api=1&query={lat},{lon}"
-            result += f"\n{maps_link}"
-            
-        result += f"\n📏 Distance: {hospital_info['distance']} mètres"
-        
-        if hospital_info['emergency']:
-            result += "\n\n⚠️ En cas d'urgence vitale, appelez immédiatement le 15 (SAMU) ou le 112"
-
-        return result
-
-    except requests.exceptions.RequestException as e:
-        print(f"Erreur API Geoapify: {str(e)}")
-        return "\n\nService de localisation temporairement indisponible"
-    except Exception as e:
-        print(f"Erreur inattendue: {str(e)}")
-        return "\n\nErreur lors de la recherche d'établissements médicaux"
-    
-    
     
 @app.route('/reset', methods=['POST'])
 def reset_conversation():

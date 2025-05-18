@@ -11,8 +11,8 @@
 .chat-modal {
   position: fixed;
   bottom: -100%;
-  right: 20px;
-  width: 800px;
+  right: 10%;
+  width: 1000px;
   height: 70vh;
   background-color: white;
   border-radius: 10px 10px 0 0;
@@ -29,7 +29,7 @@
 @media (max-width: 900px) {
   .chat-modal {
     width: calc(100% - 40px);
-    right: 20px;
-    left: 20px;
+    right: 50%;
+    left: 50%;
   }
 }

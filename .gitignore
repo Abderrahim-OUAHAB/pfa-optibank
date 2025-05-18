@@ -89,3 +89,8 @@ e2e-data-engineering-main/dags/__pycache__
 e2e-data-engineering-main/.idea
 e2e-data-engineering-main/script
 
+### chatbot ###
+
+chatbot/venv
+
+# chatbot/.env

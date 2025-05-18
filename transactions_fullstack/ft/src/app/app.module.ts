@@ -21,7 +21,8 @@ import { FilterUserMessagesPipe } from './chat/filter-user-messages.pipe';
 import { TruncatePipe } from './chat/truncate.pipe';
 import { ChatWrapperComponent } from './chat-wrapper/chat-wrapper.component';
 import { CommonModule } from '@angular/common';
-
+import { FormsModule } from '@angular/forms';
+import {MatSnackBarModule} from '@angular/material/snack-bar'; 
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,11 +42,11 @@ import { CommonModule } from '@angular/common';
     BrowserAnimationsModule,
     MatToolbarModule,
         CommonModule,
-
+FormsModule,
     MatRadioModule,
     MatButtonModule,
     MatSidenavModule,
-    MatIconModule,
+    MatIconModule,MatSnackBarModule,
     MatListModule,
     MatMenuModule,
     ToastrModule.forRoot({

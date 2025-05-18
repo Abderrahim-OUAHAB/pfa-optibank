@@ -32,6 +32,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role=Role.USER;
 
+    
+
 public enum Status {
     PENDING,       
     APPROVED,

@@ -16,12 +16,23 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { ChatComponent } from './chat/chat.component';
+import { FilterUserMessagesPipe } from './chat/filter-user-messages.pipe';
+import { TruncatePipe } from './chat/truncate.pipe';
+import { ChatWrapperComponent } from './chat-wrapper/chat-wrapper.component';
+import { CommonModule } from '@angular/common';
+
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
     NavbarComponent,
-    HomeComponent,LogoutComponent
+    LogoutComponent,
+    HomeComponent,
+    ChatComponent,
+    FilterUserMessagesPipe,
+    TruncatePipe,
+    ChatWrapperComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +40,8 @@ import { MatMenuModule } from '@angular/material/menu';
     HttpClientModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+        CommonModule,
+
     MatRadioModule,
     MatButtonModule,
     MatSidenavModule,

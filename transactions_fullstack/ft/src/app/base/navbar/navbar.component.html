@@ -25,18 +25,12 @@
           <mat-icon>home</mat-icon> Accueil
         </a>
         
-        <!-- Liens Admin -->
-        <ng-container *ngIf="authState.role === 'ADMIN'">
-         
-          <a routerLink="/admin/users" mat-button>
-            <mat-icon>people</mat-icon> Utilisateurs
-          </a>
-        </ng-container>
+    
         
         <!-- Liens Client -->
         <ng-container *ngIf="authState.role === 'USER'">
         
-          <a routerLink="/transactions" mat-button>
+          <a  routerLink="/transactions/new" mat-button>
             <mat-icon>payments</mat-icon> Transactions
           </a>
         </ng-container>
@@ -51,10 +45,7 @@
           </a>
         </ng-container>
         
-        <!-- Menu utilisateur -->
-        <button *ngIf="authState.isAuthenticated" mat-button >
-          <mat-icon>account_circle</mat-icon> Mon compte
-        </button>
+      
        
          
           <button mat-button *ngIf="authState.isAuthenticated"(click)="logout()">
@@ -78,25 +69,10 @@
           <mat-icon>home</mat-icon> Accueil
         </a>
         
-        <!-- Liens Admin -->
-        <ng-container *ngIf="authState.role === 'ADMIN'">
-          <a routerLink="/admin/dashboard" mat-list-item (click)="sidenav.toggle()">
-            <mat-icon>dashboard</mat-icon> Dashboard
-          </a>
-          <a routerLink="/admin/users" mat-list-item (click)="sidenav.toggle()">
-            <mat-icon>people</mat-icon> Utilisateurs
-          </a>
-        </ng-container>
+      
         
         <!-- Liens Client -->
-        <ng-container *ngIf="authState.role === 'USER'">
-          <a routerLink="/accounts" mat-list-item (click)="sidenav.toggle()">
-            <mat-icon>account_balance</mat-icon> Comptes
-          </a>
-          <a routerLink="/transactions" mat-list-item (click)="sidenav.toggle()">
-            <mat-icon>payments</mat-icon> Transactions
-          </a>
-        </ng-container>
+       
         
         <!-- Liens non authentifiés -->
         <ng-container *ngIf="!authState.isAuthenticated">
@@ -110,9 +86,7 @@
         
         <!-- Menu utilisateur -->
         <ng-container *ngIf="authState.isAuthenticated">
-          <a routerLink="/profile" mat-list-item (click)="sidenav.toggle()">
-            <mat-icon>person</mat-icon> Profil
-          </a>
+         
           <a mat-list-item (click)="logout(); sidenav.toggle()">
             <mat-icon>logout</mat-icon> Déconnexion
           </a>

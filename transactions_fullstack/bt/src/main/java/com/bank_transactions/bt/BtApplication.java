@@ -13,7 +13,10 @@ exclude = {
     DataSourceAutoConfiguration.class,
     HibernateJpaAutoConfiguration.class
 })
-@EnableCassandraRepositories(basePackages = "com.bank_transactions.auth.repositories")
+@EnableCassandraRepositories(basePackages = {
+    "com.bank_transactions.auth.repositories",
+    "com.bank_transactions.transactions.repositories"
+})
 
 public class BtApplication {
     public static void main(String[] args) {

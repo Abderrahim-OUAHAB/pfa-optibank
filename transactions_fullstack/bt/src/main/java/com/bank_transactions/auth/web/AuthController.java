@@ -41,7 +41,7 @@ public class AuthController {
         if (userService.validateCredentials(request.getEmail(), request.getPassword())) {
              User user = userRepo.findByEmail(request.getEmail()).orElseThrow();
             String token = jwtService.generateToken(request.getEmail());
-            return ResponseEntity.ok(new JwtResponseDto(token,user.getRole().toString()));
+            return ResponseEntity.ok(new JwtResponseDto(token,user.getRole().toString(),user.getEmail()));
         }
         throw new InvalidCredentialsException();
     }

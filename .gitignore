@@ -94,3 +94,7 @@ e2e-data-engineering-main/script
 chatbot/venv
 
 # chatbot/.env
+
+.dist
+
+.DS_Store

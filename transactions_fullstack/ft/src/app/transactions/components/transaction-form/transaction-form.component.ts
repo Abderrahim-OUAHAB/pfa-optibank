@@ -122,53 +122,74 @@ private saveToCsv(transaction: any): Promise<void> {
     });
   }
 
-  // Fonctions de génération aléatoire
-  private generateLocation(): string {
-    const cities = ['Paris', 'Lyon', 'Marseille', 'Bordeaux', 'Nice'];
-    return cities[Math.floor(Math.random() * cities.length)];
-  }
+ // Liste extraite directement depuis le CSV
+private generateLocation(): string {
+  const locations = [
+    'Mesa', 'Raleigh', 'Atlanta', 'Oklahoma City', 'Columbus', 'Fresno',
+    'Charlotte', 'Albuquerque', 'Dallas', 'Boston', 'Virginia Beach',
+    'Denver', 'San Diego', 'Milwaukee', 'Las Vegas', 'Chicago',
+    'Indianapolis', 'Seattle', 'Portland', 'Washington', 'Philadelphia',
+    'New York', 'Memphis', 'Houston', 'Phoenix', 'Omaha', 'Sacramento',
+    'Louisville', 'Kansas City', 'Tucson', 'Detroit', 'Fort Worth',
+    'San Jose', 'Colorado Springs', 'Jacksonville', 'San Francisco',
+    'El Paso', 'Austin', 'Los Angeles', 'Nashville', 'San Antonio',
+    'Miami'
+  ];
+  return locations[Math.floor(Math.random() * locations.length)];
+}
 
-  private generateDeviceId(): string {
-    return `DEV-${Math.floor(1000 + Math.random() * 9000)}`;
-  }
+private generateDeviceId(): string {
+  // Les DeviceID dans le CSV sont au format DXXXXX (ex: D000289, D000424)
+  const suffix = Math.floor(Math.random() * 99999).toString().padStart(5, '0');
+  return `D${suffix}`;
+}
 
-  private generateIpAddress(): string {
-    return Array.from({ length: 4 }, () => Math.floor(Math.random() * 256)).join('.');
-  }
+private generateIpAddress(): string {
+  return Array.from({ length: 4 }, () => Math.floor(Math.random() * 256)).join('.');
+}
 
-  private generateMerchantId(): string {
-    return `MCH-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-  }
+private generateMerchantId(): string {
+  // Les MerchantID dans le CSV sont au format MXXX (ex: M093, M060)
+  const suffix = Math.floor(Math.random() * 999).toString().padStart(3, '0');
+  return `M${suffix}`;
+}
 
-  private generateChannel(): string {
-    const channels = ['Mobile', 'Web', 'Terminal', 'ATM'];
-    return channels[Math.floor(Math.random() * channels.length)];
-  }
+private generateChannel(): string {
+  // Valeurs trouvées dans le CSV : Online, ATM, Branch, Terminal
+  const channels = ['Online', 'ATM', 'Branch'];
+  return channels[Math.floor(Math.random() * channels.length)];
+}
 
-  private generateCustomerAge(): number {
-    return Math.floor(Math.random() * (70 - 18 + 1)) + 18;
-  }
+private generateCustomerAge(): number {
+  // Dans le CSV, les âges vont de 18 à ~80
+  return Math.floor(Math.random() * (80 - 18 + 1)) + 18;
+}
 
-  private generateCustomerOccupation(): string {
-    const jobs = ['Employé', 'Cadre', 'Indépendant', 'Étudiant', 'Retraité'];
-    return jobs[Math.floor(Math.random() * jobs.length)];
-  }
+private generateCustomerOccupation(): string {
+  // Professions extraites du CSV : Engineer, Doctor, Retired, Student
+  const jobs = ['Engineer', 'Doctor', 'Retired', 'Student'];
+  return jobs[Math.floor(Math.random() * jobs.length)];
+}
 
-  private generateRandomNumber(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+private generateRandomNumber(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-  private generateAccountBalance(): number {
-    return +(Math.random() * 100000).toFixed(2); // Entre 0 et 100 000
-  }
+private generateAccountBalance(): number {
+  // Comme dans le CSV, plages typiques entre 0 et 15 000 environ
+  return +(Math.random() * 15000).toFixed(2);
+}
 
-    private generateTransactionId(): string {
-    return `TX${Math.floor(100000 + Math.random() * 900000)}`;
-  }
+private generateTransactionId(): string {
+  // Le format est TX suivi de 6 chiffres (ex: TX001474)
+  const suffix = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
+  return `TX${suffix}`;
+}
+
 private generatePreviousTransactionDate(): Date {
-    const now = new Date();
-    const daysAgo = Math.floor(Math.random() * 30);
-    const previousDate = new Date(now.getTime() - daysAgo * 24 * 60 * 60 * 1000);
-    return previousDate;
-  }
+  const now = new Date();
+  const daysAgo = Math.floor(Math.random() * 30); // Transactions récentes
+  const previousDate = new Date(now.getTime() - daysAgo * 24 * 60 * 60 * 1000);
+  return previousDate;
+}
 }

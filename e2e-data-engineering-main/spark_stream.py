@@ -319,7 +319,23 @@ class CassandraConnector:
         except Exception as e:
             logger.error(f"Erreur lors de la création du keyspace/tables: {str(e)}", exc_info=True)
             raise
-    
+
+    def update_transaction_status(self, transaction_id: str, is_fraud: bool):
+        """
+        Met à jour le statut d'une transaction dans la table 'transactions'
+        """
+        try:
+            status = "REJECTED" if is_fraud else "ACCEPTED"
+            query = f"""
+                UPDATE {self.keyspace}.transactions 
+                SET status = '{status}' 
+                WHERE transaction_id = '{transaction_id}'
+            """
+            self.session.execute(query)
+            logger.info(f"Statut mis à jour pour la transaction {transaction_id} : {status}")
+        except Exception as e:
+            logger.error(f"Erreur lors de la mise à jour du statut pour {transaction_id}: {e}", exc_info=True)
+        
     def write_transactions(self, df, is_fraud: bool) -> bool:
         """Écrit un DataFrame dans la table appropriée"""
         try:
@@ -458,7 +474,13 @@ def process_stream(kafka_df, schema: StructType, cassandra_connector: CassandraC
             
             cassandra_connector.write_transactions(fraudulent, is_fraud=True)
             cassandra_connector.write_transactions(legitimate, is_fraud=False)
-            
+            # Mise à jour des statuts pour les transactions frauduleuses
+            for row in fraudulent.select("transactionid").collect():
+                cassandra_connector.update_transaction_status(row["transactionid"], is_fraud=True)
+
+            # Mise à jour des statuts pour les transactions légitimes
+            for row in legitimate.select("transactionid").collect():
+                 cassandra_connector.update_transaction_status(row["transactionid"], is_fraud=False)
             logger.info(f"Batch {batch_id} traité - Frauduleuses: {fraudulent.count()}, Légitimes: {legitimate.count()}")
             
         except Exception as e:

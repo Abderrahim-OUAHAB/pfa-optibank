@@ -49,7 +49,8 @@ def stream_data():
     file_path = "dataset/bank_transactions.csv"
 
     while True:
-
+        time.sleep(20) 
+        
         for transaction in get_bank_transactions(file_path):
             try:
                 formatted_data = format_data(transaction)
@@ -59,9 +60,9 @@ def stream_data():
             except Exception as e:
                 logging.error(f"Error processing transaction: {e}")
                 continue
-
+            time.sleep(30)  
         logging.info("All transactions streamed. Sleeping for 1 hour....")
-        time.sleep(3600)  
+       
 
 if __name__ == "__main__":
     stream_data()

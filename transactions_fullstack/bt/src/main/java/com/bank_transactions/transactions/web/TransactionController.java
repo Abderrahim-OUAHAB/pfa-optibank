@@ -26,7 +26,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping("/{transactionId}")
-    public TransactionResponseDto getTransaction(@PathVariable UUID transactionId) {
+    public TransactionResponseDto getTransaction(@PathVariable String transactionId) {
         return transactionService.getTransactionById(transactionId);
     }
 

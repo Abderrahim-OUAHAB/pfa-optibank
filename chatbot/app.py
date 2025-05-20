@@ -1,4 +1,6 @@
-from flask import Flask, request, jsonify
+import csv
+import logging
+from flask import Flask, json, request, jsonify
 from pinecone_utils import init_pinecone, load_data_from_json
 from groq_utils import get_llm
 from langchain.chains import ConversationalRetrievalChain
@@ -10,6 +12,10 @@ import requests
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:4200"])
+CSV_PATH = "../e2e-data-engineering-main/dataset/bank_transactions.csv"
+# Configuration du logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # Prompt
 PROMPT_TEMPLATE = PROMPT_TEMPLATE = """Vous êtes BANBot, un assistant spécialisé pour les clients bancaires. Votre mission est de fournir des réponses claires et précises sur les services bancaires.
@@ -242,7 +248,48 @@ def reset_conversation():
             "status": "error",
             "message": f"Échec de la réinitialisation: {str(e)}"
         }), 500
+
+
+@app.route('/save-to-csv', methods=['POST'])
+def save_to_csv():
+    try:
+        logger.debug("Requête reçue avec données: %s", request.json)
+        
+        data = request.json
+        
+        # Vérification des champs obligatoires
+        required_fields = [
+            "TransactionID", "AccountID", "TransactionAmount", "TransactionDate",
+            "TransactionType", "Location", "DeviceID", "IP Address", "MerchantID",
+            "Channel", "CustomerAge", "CustomerOccupation", "TransactionDuration",
+            "LoginAttempts", "AccountBalance", "PreviousTransactionDate"
+        ]
+        
+        for field in required_fields:
+            if field not in data:
+                logger.error("Champ manquant: %s", field)
+                return jsonify({"error": f"Champ manquant: {field}"}), 400
+        
+        # Vérifier si le dossier existe
+        os.makedirs(os.path.dirname(CSV_PATH), exist_ok=True)
+        
+        file_exists = os.path.isfile(CSV_PATH)
+        
+        with open(CSV_PATH, mode='a', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=required_fields)
+            
+            if not file_exists:
+                writer.writeheader()
+            
+            writer.writerow(data)
+        
+        logger.info("Transaction sauvegardée avec succès")
+        return jsonify({"status": "success"}), 200
     
-    
+    except Exception as e:
+        logger.exception("Erreur lors de la sauvegarde CSV")
+        return jsonify({"error": str(e)}), 500
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

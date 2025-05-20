@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TransactionService } from '../../services/transaction.service';
 import { TransactionType } from '../../models/transaction-type.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-transaction-form',
@@ -17,7 +18,8 @@ export class TransactionFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private transactionService: TransactionService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +42,7 @@ export class TransactionFormComponent implements OnInit {
     // Génération des champs facultatifs
     const formData = {
       ...this.transactionForm.value,
+      transactionId: this.generateTransactionId(),
       userEmail: this.email||'',
       location: this.generateLocation(),
       deviceId: this.generateDeviceId(),
@@ -50,28 +53,72 @@ export class TransactionFormComponent implements OnInit {
       customerOccupation: this.generateCustomerOccupation(),
       transactionDuration: this.generateRandomNumber(30, 300), // en secondes
       loginAttempts: this.generateRandomNumber(0, 5),
-      accountBalance: this.generateAccountBalance()
+      accountBalance: this.generateAccountBalance(),
+      previousTransactionDate: this.generatePreviousTransactionDate(),
+      transactionDate: new Date()
     };
 
     this.isLoading = true;
-    this.transactionService.createTransaction(formData).subscribe({
-      next: () => {
-        this.snackBar.open('Transaction effectuée avec succès', 'Fermer', {
-          duration: 3000,
-          panelClass: ['success-snackbar']
-        });
-        this.transactionForm.reset();
-      },
-      error: (err) => {
-        this.snackBar.open(`Erreur lors de la transaction: ${err.message}`, 'Fermer', {
-          duration: 5000,
-          panelClass: ['error-snackbar']
-        });
-        console.error(err);
-      },
-      complete: () => {
-        this.isLoading = false;
-      }
+
+this.saveToCsv(formData).then(() => {
+      // 2. Envoi au backend Spring
+      this.transactionService.createTransaction({
+        ...formData,
+        userEmail: this.email || ''
+      }).subscribe({
+        next: () => {
+          this.snackBar.open('Transaction effectuée avec succès', 'Fermer', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+          this.transactionForm.reset();
+        },
+        error: (err) => {
+          this.snackBar.open(`Erreur lors de la transaction: ${err.message}`, 'Fermer', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
+          console.error(err);
+        },
+        complete: () => {
+          this.isLoading = false;
+        }
+      });
+    }).catch((error: { message: any; }) => {
+      this.isLoading = false;
+      this.snackBar.open(`Erreur lors de la sauvegarde: ${error.message}`, 'Fermer', {
+        duration: 5000,
+        panelClass: ['error-snackbar']
+      });
+    });
+  }
+private saveToCsv(transaction: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // Formatage des données pour correspondre au CSV
+      const csvData = {
+        TransactionID: transaction.transactionId,
+        AccountID: transaction.accountId,
+        TransactionAmount: transaction.transactionAmount,
+        TransactionDate: transaction.transactionDate,
+        TransactionType: transaction.transactionType,
+        Location: transaction.location,
+        DeviceID: transaction.deviceId,
+        'IP Address': transaction.ipAddress,
+        MerchantID: transaction.merchantId,
+        AccountBalance: transaction.accountBalance,
+        PreviousTransactionDate: transaction.previousTransactionDate,
+        Channel: transaction.channel,
+        CustomerAge: transaction.customerAge,
+        CustomerOccupation: transaction.customerOccupation,
+        TransactionDuration: transaction.transactionDuration,
+        LoginAttempts: transaction.loginAttempts
+      };
+
+      // Appel à une API pour sauvegarder dans le CSV
+      this.http.post('http://localhost:5000/save-to-csv', csvData).subscribe({
+        next: () => resolve(),
+        error: (err: any) => reject(err)
+      });
     });
   }
 
@@ -113,5 +160,15 @@ export class TransactionFormComponent implements OnInit {
 
   private generateAccountBalance(): number {
     return +(Math.random() * 100000).toFixed(2); // Entre 0 et 100 000
+  }
+
+    private generateTransactionId(): string {
+    return `TX${Math.floor(100000 + Math.random() * 900000)}`;
+  }
+private generatePreviousTransactionDate(): Date {
+    const now = new Date();
+    const daysAgo = Math.floor(Math.random() * 30);
+    const previousDate = new Date(now.getTime() - daysAgo * 24 * 60 * 60 * 1000);
+    return previousDate;
   }
 }

@@ -8,5 +8,5 @@ import com.bank_transactions.transactions.dtos.TransactionResponseDto;
 
 public interface TransactionService {
 public TransactionResponseDto createTransaction(TransactionRequestDto request)  ;
-public TransactionResponseDto getTransactionById(UUID transactionId) ;
+public TransactionResponseDto getTransactionById(String transactionId) ;
 }

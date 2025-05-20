@@ -477,7 +477,7 @@ def main():
     }
     
     CASSANDRA_CONFIG = {
-        "keyspace": "banking"
+        "keyspace": "spark_streams"
     }
     
     spark = None

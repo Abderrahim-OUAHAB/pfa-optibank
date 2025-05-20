@@ -1,6 +1,7 @@
 import { TransactionType } from "./transaction-type.enum";
 
 export interface Transaction {
+  transactionId: string;
   accountId: string;
   userEmail: string;
   transactionAmount: number;

@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface TransactionRepository extends CassandraRepository<Transaction, UUID> {
 
     @Query("SELECT * FROM transactions WHERE transaction_id = ?0")
-    Transaction findByTransactionId(UUID transactionId);
+    Transaction findByTransactionId(String transactionId);
 }

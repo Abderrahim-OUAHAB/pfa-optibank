@@ -6,6 +6,7 @@ import com.bank_transactions.transactions.entities.Transaction;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.UUID;
 
 @Component
@@ -14,8 +15,9 @@ public class TransactionMapper {
     public Transaction toEntity(TransactionRequestDto dto) {
         Transaction entity = new Transaction();
 
-        entity.setTransactionId(UUID.randomUUID()); // Génère un ID aléatoire
+        entity.setTransactionId(dto.getTransactionId()); // Génère un ID aléatoire
         entity.setTransactionAmount(dto.getTransactionAmount());
+        entity.setAccountId(dto.getAccountId());
         entity.setTransactionType(dto.getTransactionType());
         entity.setLocation(dto.getLocation());
         entity.setDeviceId(dto.getDeviceId());
@@ -27,8 +29,10 @@ public class TransactionMapper {
         entity.setTransactionDuration(dto.getTransactionDuration());
         entity.setLoginAttempts(dto.getLoginAttempts());
         entity.setAccountBalance(dto.getAccountBalance());
-        entity.setPreviousTransactionDate(LocalDateTime.now()); // Ou prends-le du DTO si présent
+        entity.setTransactionDate(LocalDateTime.now());
+        entity.setPreviousTransactionDate(dto.getPreviousTransactionDate()); // Ou prends-le du DTO si présent
         entity.setUserEmail(dto.getUserEmail());
+        entity.setStatus(Transaction.Status.PENDING);
         return entity;
     }
 
@@ -38,6 +42,7 @@ public class TransactionMapper {
         dto.setTransactionId(entity.getTransactionId());
         dto.setTransactionAmount(entity.getTransactionAmount());
         dto.setTransactionType(entity.getTransactionType());
+        dto.setAccountId(entity.getAccountId());
         dto.setLocation(entity.getLocation());
         dto.setDeviceId(entity.getDeviceId());
         dto.setIpAddress(entity.getIpAddress());
@@ -48,8 +53,10 @@ public class TransactionMapper {
         dto.setTransactionDuration(entity.getTransactionDuration());
         dto.setLoginAttempts(entity.getLoginAttempts());
         dto.setAccountBalance(entity.getAccountBalance());
+        dto.setTransactionDate(entity.getTransactionDate());
         dto.setPreviousTransactionDate(entity.getPreviousTransactionDate());
        dto.setUserEmail(entity.getUserEmail());
+        dto.setStatus(Transaction.Status.PENDING);
         return dto;
     }
 }

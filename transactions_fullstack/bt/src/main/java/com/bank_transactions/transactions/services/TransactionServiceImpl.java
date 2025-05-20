@@ -38,7 +38,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionResponseDto getTransactionById(UUID transactionId) {
+    public TransactionResponseDto getTransactionById(String transactionId) {
         return transactionMapper.toDto(
             transactionRepository.findByTransactionId(transactionId)
         );

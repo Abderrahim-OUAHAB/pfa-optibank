@@ -5,9 +5,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.bank_transactions.transactions.entities.Transaction.Status;
+
 @Data
 public class TransactionResponseDto {
-    private UUID transactionId;
+    private String transactionId;
     private String accountId;
     private String userEmail;
     private LocalDateTime transactionDate;
@@ -24,4 +26,5 @@ public class TransactionResponseDto {
     private Integer loginAttempts;
     private BigDecimal accountBalance;
     private LocalDateTime previousTransactionDate;
+     private Status status=Status.PENDING;
 }

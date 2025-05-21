@@ -34,7 +34,13 @@ public class TransactionController {
     public TransactionResponseDto createTransaction(
             @RequestBody TransactionRequestDto request) { 
 
-       
+      
         return transactionService.createTransaction(request);
     }
+
+    @GetMapping("/user/{userEmail}")
+    public List<TransactionResponseDto> getTransactionsByUserEmail(@PathVariable String userEmail) {
+        return transactionService.getTransactionsByUserEmail(userEmail);
+    }
+    
 }

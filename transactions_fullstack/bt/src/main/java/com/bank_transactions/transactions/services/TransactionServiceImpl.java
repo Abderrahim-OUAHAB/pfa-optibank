@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +44,15 @@ public class TransactionServiceImpl implements TransactionService {
             transactionRepository.findByTransactionId(transactionId)
         );
     }
+
+   @Override
+public List<TransactionResponseDto> getTransactionsByUserEmail(String userEmail) {
+    List<Transaction> transactions = transactionRepository.findByUserEmail(userEmail);
+    return transactions.stream()
+        .map(transactionMapper::toDto)
+        .collect(Collectors.toList());
+}
+
 
  
 }

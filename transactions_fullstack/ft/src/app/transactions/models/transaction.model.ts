@@ -16,4 +16,5 @@ export interface Transaction {
   transactionDuration?: number;
   loginAttempts?: number;
   accountBalance?: number;
+  status?: string;
 }

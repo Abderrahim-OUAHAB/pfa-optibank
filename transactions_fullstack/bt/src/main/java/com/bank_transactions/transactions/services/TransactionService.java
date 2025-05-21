@@ -9,4 +9,5 @@ import com.bank_transactions.transactions.dtos.TransactionResponseDto;
 public interface TransactionService {
 public TransactionResponseDto createTransaction(TransactionRequestDto request)  ;
 public TransactionResponseDto getTransactionById(String transactionId) ;
+public List<TransactionResponseDto> getTransactionsByUserEmail(String userEmail) ;
 }

@@ -32,7 +32,7 @@ public class TransactionMapper {
         entity.setTransactionDate(LocalDateTime.now());
         entity.setPreviousTransactionDate(dto.getPreviousTransactionDate()); // Ou prends-le du DTO si présent
         entity.setUserEmail(dto.getUserEmail());
-        entity.setStatus(Transaction.Status.PENDING);
+        entity.setStatus(dto.getStatus());
         return entity;
     }
 
@@ -55,8 +55,8 @@ public class TransactionMapper {
         dto.setAccountBalance(entity.getAccountBalance());
         dto.setTransactionDate(entity.getTransactionDate());
         dto.setPreviousTransactionDate(entity.getPreviousTransactionDate());
-       dto.setUserEmail(entity.getUserEmail());
-        dto.setStatus(Transaction.Status.PENDING);
+        dto.setUserEmail(entity.getUserEmail());
+        dto.setStatus(entity.getStatus());
         return dto;
     }
 }

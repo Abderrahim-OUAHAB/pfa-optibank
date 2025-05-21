@@ -30,7 +30,7 @@
         <!-- Liens Client -->
         <ng-container *ngIf="authState.role === 'USER'">
         
-          <a  routerLink="/transactions/new" mat-button>
+          <a  routerLink="/transactions/list" mat-button>
             <mat-icon>payments</mat-icon> Transactions
           </a>
         </ng-container>
@@ -40,7 +40,7 @@
           <a routerLink="/register" mat-button>
             <mat-icon>how_to_reg</mat-icon> S'inscrire
           </a>
-          <a routerLink="/login" mat-button>
+          <a routerLink="/" mat-button>
             <mat-icon>login</mat-icon> Connexion
           </a>
         </ng-container>
@@ -79,7 +79,7 @@
           <a routerLink="/register" mat-list-item (click)="sidenav.toggle()">
             <mat-icon>how_to_reg</mat-icon> S'inscrire
           </a>
-          <a routerLink="/login" mat-list-item (click)="sidenav.toggle()">
+          <a routerLink="/" mat-list-item (click)="sidenav.toggle()">
             <mat-icon>login</mat-icon> Connexion
           </a>
         </ng-container>

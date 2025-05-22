@@ -250,45 +250,7 @@ def reset_conversation():
         }), 500
 
 
-@app.route('/save-to-csv', methods=['POST'])
-def save_to_csv():
-    try:
-        logger.debug("Requête reçue avec données: %s", request.json)
-        
-        data = request.json
-        
-        # Vérification des champs obligatoires
-        required_fields = [
-            "TransactionID", "AccountID", "TransactionAmount", "TransactionDate",
-            "TransactionType", "Location", "DeviceID", "IP Address", "MerchantID",
-            "Channel", "CustomerAge", "CustomerOccupation", "TransactionDuration",
-            "LoginAttempts", "AccountBalance", "PreviousTransactionDate"
-        ]
-        
-        for field in required_fields:
-            if field not in data:
-                logger.error("Champ manquant: %s", field)
-                return jsonify({"error": f"Champ manquant: {field}"}), 400
-        
-        # Vérifier si le dossier existe
-        os.makedirs(os.path.dirname(CSV_PATH), exist_ok=True)
-        
-        file_exists = os.path.isfile(CSV_PATH)
-        
-        with open(CSV_PATH, mode='a', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=required_fields)
-            
-            if not file_exists:
-                writer.writeheader()
-            
-            writer.writerow(data)
-        
-        logger.info("Transaction sauvegardée avec succès")
-        return jsonify({"status": "success"}), 200
-    
-    except Exception as e:
-        logger.exception("Erreur lors de la sauvegarde CSV")
-        return jsonify({"error": str(e)}), 500
+
 
 
 if __name__ == '__main__':

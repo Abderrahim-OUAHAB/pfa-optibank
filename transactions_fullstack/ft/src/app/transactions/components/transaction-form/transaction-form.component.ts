@@ -60,7 +60,6 @@ export class TransactionFormComponent implements OnInit {
 
     this.isLoading = true;
 
-this.saveToCsv(formData).then(() => {
       // 2. Envoi au backend Spring
       this.transactionService.createTransaction({
         ...formData,
@@ -84,13 +83,7 @@ this.saveToCsv(formData).then(() => {
           this.isLoading = false;
         }
       });
-    }).catch((error: { message: any; }) => {
-      this.isLoading = false;
-      this.snackBar.open(`Erreur lors de la sauvegarde: ${error.message}`, 'Fermer', {
-        duration: 5000,
-        panelClass: ['error-snackbar']
-      });
-    });
+
   }
 private saveToCsv(transaction: any): Promise<void> {
     return new Promise((resolve, reject) => {

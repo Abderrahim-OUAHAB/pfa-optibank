@@ -25,15 +25,15 @@ public class AdminAccountConfig {
                 adminDto.setRole(Role.ADMIN); 
                 adminDto.setFirstName("OPTIBANK");
                 adminDto.setLastName("Admin");
-                adminDto.setPhone("1234567890");
-                adminDto.setAddress("123 Main St");
-                adminDto.setCity("City");
+                adminDto.setPhone("OPTIBANK");
+                adminDto.setAddress("OPTIBANK");
+                adminDto.setCity("OPTIBANK");
                 adminDto.setPostalCode("12345");
-                adminDto.setCountry("Country");
-                adminDto.setCin("1234567890");
-                adminDto.setNationality("Nationality");
-                adminDto.setProfession("Profession");
-                adminDto.setMonthlyIncome(5000);
+                adminDto.setCountry("OPTIBANK");
+                adminDto.setCin("OPTIBANK");
+                adminDto.setNationality("OPTIBANK");
+                adminDto.setProfession("OPTIBANK");
+                adminDto.setMonthlyIncome(0);
                 adminDto.setBirthDate(LocalDate.now());
                 adminDto.setStatus(Status.APPROVED);
                 

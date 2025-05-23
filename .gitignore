@@ -98,3 +98,5 @@ chatbot/venv
 .dist
 
 .DS_Store
+
+cmd.docx

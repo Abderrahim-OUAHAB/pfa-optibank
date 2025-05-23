@@ -34,6 +34,18 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
 
     @Override
     public String[] getEntityBasePackages() {
-        return new String[]{"com.bank_transactions.auth.entities", "com.bank_transactions.transactions.entities"};
+        return new String[]{
+        "com.bank_transactions.auth.entities",
+        "com.bank_transactions.transactions.entities",
+        "com.bank_transactions.audit_logs.entities",
+        "com.bank_transactions.beneficiaries.entities",
+        "com.bank_transactions.accounts.entities",
+        "com.bank_transactions.cards.entities",
+        "com.bank_transactions.alerts.entities",
+        "com.bank_transactions.loans.entities",
+        "com.bank_transactions.payment_plans.entities",
+        "com.bank_transactions.exchange_rates.entities", 
+        "com.bank_transactions.customers.entities",
+    };
     }
 }

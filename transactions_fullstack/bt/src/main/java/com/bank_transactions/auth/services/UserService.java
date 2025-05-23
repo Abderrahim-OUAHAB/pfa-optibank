@@ -13,12 +13,13 @@ import com.bank_transactions.auth.mappers.UserMapper;
 import com.bank_transactions.auth.repositories.UserRepository;
 
 @Service
-public class UserService {
+public class UserService implements UserServiceInterface{
 
     @Autowired private UserRepository userRepo;
     @Autowired private UserMapper userMapper;
     @Autowired private PasswordEncoder passwordEncoder;
 
+     @Override
     public void register(UserDto dto) {
         if (userRepo.existsById(dto.getEmail())) {
             throw new EmailAlreadyExistsException();
@@ -28,16 +29,19 @@ public class UserService {
         userRepo.save(user);
     }
 
+     @Override
     public boolean validateCredentials(String email, String rawPassword) {
         return userRepo.findByEmail(email)
             .map(user -> passwordEncoder.matches(rawPassword, user.getPassword()))
             .orElse(false);
     }
 
+     @Override
     public boolean userExists(String email) {
     return userRepo.existsById(email);
 }
 
+ @Override
 public void registerAdmin(UserDto dto) {
     if (userRepo.existsById(dto.getEmail())) {
         throw new EmailAlreadyExistsException();

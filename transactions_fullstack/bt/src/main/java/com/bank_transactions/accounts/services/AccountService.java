@@ -8,4 +8,6 @@ import java.util.List;
 public interface AccountService {
     AccountResponseDto create(AccountRequestDto dto);
     List<AccountResponseDto> getAll();
+    void deleteByCustomerId(String customerId);
+    AccountResponseDto findAccountsByCustomerId(String customerId);
 }

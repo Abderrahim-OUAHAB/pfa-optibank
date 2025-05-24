@@ -33,7 +33,19 @@ export class LoginComponent {
     this.auth.login(loginData).subscribe({
       next: res => {
         this.toastr.success('Connexion réussie', 'Success');
-        this.router.navigate(['/home']);
+        this.auth.getUserByEmail(loginData.email).subscribe(user => {
+          if(user.status=="PENDING"){
+            this.router.navigate(['/pending']);
+
+          }else if (user.status=="REJECTED"){
+            this.router.navigate(['/rejected']);
+
+          }
+            else{
+                    this.router.navigate(['/home']);
+
+          }
+        })
       },
       error: err => {
         console.log(err);

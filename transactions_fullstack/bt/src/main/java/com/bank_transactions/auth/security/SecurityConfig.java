@@ -22,7 +22,7 @@ public class SecurityConfig {
             .requestMatchers("/beneficiaries/**").permitAll()
             .requestMatchers("/alerts/**").permitAll()
             .requestMatchers("/audit-logs/**").permitAll()
-            .requestMatchers("/transactions/**").permitAll()
+            .requestMatchers("/customers/**").permitAll()
             .requestMatchers("/accounts/**").permitAll()
             .requestMatchers("/loans/**").permitAll()
             .requestMatchers("/payment-plans/**").permitAll()
@@ -36,4 +36,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    
 }

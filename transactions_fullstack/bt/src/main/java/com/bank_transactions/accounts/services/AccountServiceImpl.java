@@ -30,4 +30,16 @@ public class AccountServiceImpl implements AccountService {
                 .map(AccountMapper::toResponse)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteByCustomerId(String customerId) {
+        repo.deleteByCustomerId(customerId);
+    }
+
+    @Override
+    public AccountResponseDto findAccountsByCustomerId(String customerId) {
+   
+        return AccountMapper.toResponse(repo.findAccountsByCustomerId(customerId));
+
+    }
 }

@@ -27,6 +27,6 @@ public class UserDto {
     private String profession;
     private double monthlyIncome;
     private LocalDate birthDate;
-    private Status status=Status.PENDING;
-    private Role role=Role.USER;
+    private Status status;
+    private Role role;
 }

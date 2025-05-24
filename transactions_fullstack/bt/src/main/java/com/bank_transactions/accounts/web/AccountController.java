@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/accounts")
@@ -17,13 +18,24 @@ public class AccountController {
     @Autowired
     private AccountService service;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<AccountResponseDto> create(@RequestBody AccountRequestDto dto) {
         return ResponseEntity.ok(service.create(dto));
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<AccountResponseDto>> getAll() {
         return ResponseEntity.ok(service.getAll());
+    }
+
+    @DeleteMapping("/delete/{customerId}")
+    public ResponseEntity<Map<String, String>> delete(@PathVariable String customerId) {
+        service.deleteByCustomerId(customerId);
+        return ResponseEntity.ok(Map.of("message", "Account deleted"));
+    }
+
+    @GetMapping("/find/{customerId}")
+    public ResponseEntity<AccountResponseDto> findAccountsByCustomerId(@PathVariable String customerId) {
+        return ResponseEntity.ok(service.findAccountsByCustomerId(customerId));
     }
 }

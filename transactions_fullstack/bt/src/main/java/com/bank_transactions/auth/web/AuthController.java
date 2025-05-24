@@ -1,12 +1,16 @@
 package com.bank_transactions.auth.web;
 
+import java.util.List;
 import java.util.Map;
-import org.springframework.security.core.Authentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,5 +60,26 @@ public class AuthController {
             return ResponseEntity.ok(Map.of("message", "Logout successful"));
         }
         return ResponseEntity.badRequest().body(Map.of("message", "Invalid token"));
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDto>> getAll() {
+        return ResponseEntity.ok(userService.getAll());
+
+    } 
+    @GetMapping("/users/{email}")
+    public ResponseEntity<User> getUser(@PathVariable String email) {
+        return ResponseEntity.ok(userService.findUserByEmail(email));
+    }
+    @PutMapping("/users/{email}/status")
+    public ResponseEntity<Map<String, String>> changeStatus(@PathVariable String email, @RequestBody String status) {
+        userService.updateUserStatus(email, status);
+        return ResponseEntity.ok(Map.of("message", "User status updated"));
+    }
+
+    @GetMapping("/delete/{email}")
+    public ResponseEntity<Map<String, String>> delete(@PathVariable String email) {
+        userService.deleteByEmail(email);
+        return ResponseEntity.ok(Map.of("message", "User deleted"));
     }
 }

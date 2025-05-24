@@ -69,4 +69,24 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('token');
   }
+
+  getAllUsers(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/users`);
+  }
+updateUserStatus(email: string, status: string): Observable<any> {
+  // Envoyer juste la valeur du statut plutôt que l'objet JSON
+  return this.http.put(
+    `${this.baseUrl}/users/${email}/status`,
+    status,  // Envoie direct de la string
+    { 
+      headers: new HttpHeaders({
+        'Content-Type': 'text/plain'
+      })
+    }
+  );
+}
+
+getUserByEmail(email: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/users/${email}`);
+}
 }

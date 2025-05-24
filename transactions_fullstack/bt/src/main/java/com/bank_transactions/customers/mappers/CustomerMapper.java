@@ -10,7 +10,7 @@ public class CustomerMapper {
 
     public static Customer toEntity(CustomerRequestDto dto) {
         Customer customer = new Customer();
-        customer.setCustomerId(UUID.randomUUID().toString());
+        customer.setCustomerId(dto.getCustomerId());
         customer.setFirstName(dto.getFirstName());
         customer.setLastName(dto.getLastName());
         customer.setEmail(dto.getEmail());

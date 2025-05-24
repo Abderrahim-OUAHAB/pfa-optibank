@@ -23,6 +23,8 @@ public class UserMapper {
         user.setProfession(dto.getProfession());
         user.setMonthlyIncome(dto.getMonthlyIncome());
         user.setBirthDate(dto.getBirthDate());
+        user.setStatus(dto.getStatus());
+        user.setRole(dto.getRole());
         return user;
     }
 
@@ -41,6 +43,8 @@ public class UserMapper {
         dto.setProfession(user.getProfession());
         dto.setMonthlyIncome(user.getMonthlyIncome());
         dto.setBirthDate(user.getBirthDate());
+        dto.setStatus(user.getStatus());
+        dto.setRole(user.getRole());
         return dto;
     }
 }

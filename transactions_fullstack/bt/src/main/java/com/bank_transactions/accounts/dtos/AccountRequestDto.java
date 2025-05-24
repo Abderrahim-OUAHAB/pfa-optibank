@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class AccountRequestDto {
+    private String accountId;
     private String accountNumber;
     private String type;
     private double balance;

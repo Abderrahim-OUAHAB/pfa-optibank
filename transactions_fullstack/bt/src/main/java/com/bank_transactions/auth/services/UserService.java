@@ -1,5 +1,9 @@
 package com.bank_transactions.auth.services;
 
+import java.lang.StackWalker.Option;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,4 +56,26 @@ public void registerAdmin(UserDto dto) {
     user.setStatus(Status.APPROVED);
     userRepo.save(user);
 }
+
+ @Override
+ public List<UserDto> getAll() {
+    return userRepo.findAll()
+            .stream()
+            .map(userMapper::toDto)
+            .toList();
+ }
+
+ @Override
+ public void updateUserStatus(String email, String status) {
+     userRepo.updateUserStatus(email, status);
+ }
+
+ @Override
+ public User findUserByEmail(String email) {
+     return userRepo.findByEmail(email).orElse(null);
+ }
+ @Override
+ public void deleteByEmail(String email) {
+     userRepo.deleteByEmail(email);
+ }
 }

@@ -40,7 +40,12 @@ export class RegisterComponent {
 
     this.isLoading = true;
     const formValues = this.registerForm.value;
-    this.auth.register(formValues).subscribe({
+    const formData = {
+      ...formValues,
+      role: 'USER',
+      status: 'PENDING'
+    }
+    this.auth.register(formData).subscribe({
       next: () => {
         this.success = 'Compte créé avec succès';
         this.toastr.success(this.success);

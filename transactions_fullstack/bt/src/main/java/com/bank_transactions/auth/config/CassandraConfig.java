@@ -3,9 +3,14 @@ package com.bank_transactions.auth.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.config.SchemaAction;
+import org.springframework.data.cassandra.config.SessionBuilderConfigurer;
 import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification;
 import org.springframework.data.cassandra.core.cql.keyspace.KeyspaceOption;
 
+import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
+import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
+
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,4 +53,13 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
         "com.bank_transactions.customers.entities",
     };
     }
+@Override
+protected SessionBuilderConfigurer getSessionBuilderConfigurer() {
+    return cqlSessionBuilder -> cqlSessionBuilder
+        .withConfigLoader(DriverConfigLoader.programmaticBuilder()
+            .withDuration(DefaultDriverOption.CONNECTION_CONNECT_TIMEOUT, Duration.ofSeconds(120))
+            .withDuration(DefaultDriverOption.REQUEST_TIMEOUT, Duration.ofSeconds(120))
+            .build());
+}
+    
 }

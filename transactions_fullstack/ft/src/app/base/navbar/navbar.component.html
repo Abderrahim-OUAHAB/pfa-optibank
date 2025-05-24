@@ -21,20 +21,25 @@
       <!-- Menu desktop -->
       <div class="desktop-menu" fxShow fxHide.lt-md>
         <!-- Liens communs -->
-        <a *ngIf="authState.isAuthenticated" routerLink="/home" mat-button>
+        <a *ngIf="authState.isAuthenticated && status === 'APPROVED' " routerLink="/home" mat-button>
           <mat-icon>home</mat-icon> Accueil
         </a>
         
     
         
         <!-- Liens Client -->
-        <ng-container *ngIf="authState.role === 'USER'">
+        <ng-container *ngIf="authState.role === 'USER' && status === 'APPROVED'">
         
           <a  routerLink="/transactions/list" mat-button>
             <mat-icon>payments</mat-icon> Transactions
           </a>
         </ng-container>
+        <ng-container *ngIf="authState.role === 'ADMIN'">
         
+          <a  routerLink="/users" mat-button>
+            <mat-icon>group</mat-icon> Clients
+          </a>
+        </ng-container> 
         <!-- Liens non authentifiés -->
         <ng-container *ngIf="!authState.isAuthenticated">
           <a routerLink="/register" mat-button>
@@ -65,7 +70,7 @@
         </a>
         
         <!-- Liens communs -->
-        <a *ngIf="authState.isAuthenticated" routerLink="/home" mat-list-item (click)="sidenav.toggle()">
+        <a *ngIf="authState.isAuthenticated && status === 'APPROVED'" routerLink="/home" mat-list-item (click)="sidenav.toggle()">
           <mat-icon>home</mat-icon> Accueil
         </a>
         

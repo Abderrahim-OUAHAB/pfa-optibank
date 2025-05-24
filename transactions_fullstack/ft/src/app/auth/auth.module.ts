@@ -12,10 +12,19 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
+import { UsersComponent } from './users/users.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { PendingComponent } from './pending/pending.component';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { RejectedComponent } from './rejected/rejected.component';
 @NgModule({
   declarations: [
     LoginComponent,
     RegisterComponent,
+    UsersComponent,
+    PendingComponent,
+    RejectedComponent,
   ],
   imports: [
     CommonModule,
@@ -23,11 +32,11 @@ import { MatRadioModule } from '@angular/material/radio';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatFormFieldModule,
+    MatFormFieldModule,MatIconModule,
     MatButtonModule,
     MatCardModule,
-    MatDatepickerModule,
-    MatNativeDateModule,MatRadioModule 
+    MatDatepickerModule,MatSelectModule,
+    MatNativeDateModule,MatRadioModule ,MatTableModule
   ]
 })
 export class AuthModule { }

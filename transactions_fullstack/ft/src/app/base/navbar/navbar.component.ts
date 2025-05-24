@@ -13,13 +13,16 @@ export class NavbarComponent implements OnInit {
     isAuthenticated: false,
     role: ''
   };
-
+ status: string = '';
   constructor(private authService: AuthService,private toaster: ToastrService) {}
 
   ngOnInit() {
     this.authService.authStatus$.subscribe(state => {
       this.authState = state;
     });
+    this.authService.getUserByEmail(localStorage.getItem('email') || '').subscribe(user => {
+      this.status = user.status;
+    })
   }
 
   logout() {

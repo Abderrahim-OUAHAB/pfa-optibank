@@ -4,6 +4,7 @@ import { TransactionService } from '../../services/transaction.service';
 import { TransactionType } from '../../models/transaction-type.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
+import { AccountService } from 'src/app/accounts/service/account.service';
 
 @Component({
   selector: 'app-transaction-form',
@@ -14,12 +15,13 @@ export class TransactionFormComponent implements OnInit {
   transactionForm!: FormGroup;
   isLoading = false;
   transactionTypes = Object.values(TransactionType);
-  email:string|null="";
+  email:any;
   constructor(
     private fb: FormBuilder,
     private transactionService: TransactionService,
     private snackBar: MatSnackBar,
-    private http: HttpClient
+    private http: HttpClient,
+    private accountScervice: AccountService
   ) {}
 
   ngOnInit(): void {
@@ -30,7 +32,6 @@ export class TransactionFormComponent implements OnInit {
 
   initForm(): void {
     this.transactionForm = this.fb.group({
-      accountId: ['', Validators.required],
       transactionAmount: ['', [Validators.required, Validators.min(0.01)]],
       transactionType: ['', Validators.required]
     });
@@ -38,10 +39,13 @@ export class TransactionFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.transactionForm.invalid) return;
-
+    this.accountScervice.findAccountsByCustomerId(this.email).subscribe(accounts => {
+      const accountId=accounts.accountId;
+   
     // Génération des champs facultatifs
     const formData = {
       ...this.transactionForm.value,
+      accountId:accountId,
       transactionId: this.generateTransactionId(),
       userEmail: this.email||'',
       location: this.generateLocation(),
@@ -83,37 +87,9 @@ export class TransactionFormComponent implements OnInit {
           this.isLoading = false;
         }
       });
-
+ })
   }
-private saveToCsv(transaction: any): Promise<void> {
-    return new Promise((resolve, reject) => {
-      // Formatage des données pour correspondre au CSV
-      const csvData = {
-        TransactionID: transaction.transactionId,
-        AccountID: transaction.accountId,
-        TransactionAmount: transaction.transactionAmount,
-        TransactionDate: transaction.transactionDate,
-        TransactionType: transaction.transactionType,
-        Location: transaction.location,
-        DeviceID: transaction.deviceId,
-        'IP Address': transaction.ipAddress,
-        MerchantID: transaction.merchantId,
-        AccountBalance: transaction.accountBalance,
-        PreviousTransactionDate: transaction.previousTransactionDate,
-        Channel: transaction.channel,
-        CustomerAge: transaction.customerAge,
-        CustomerOccupation: transaction.customerOccupation,
-        TransactionDuration: transaction.transactionDuration,
-        LoginAttempts: transaction.loginAttempts
-      };
 
-      // Appel à une API pour sauvegarder dans le CSV
-      this.http.post('http://localhost:5000/save-to-csv', csvData).subscribe({
-        next: () => resolve(),
-        error: (err: any) => reject(err)
-      });
-    });
-  }
 
  // Liste extraite directement depuis le CSV
 private generateLocation(): string {

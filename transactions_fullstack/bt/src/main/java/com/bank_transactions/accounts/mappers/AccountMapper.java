@@ -3,12 +3,11 @@ package com.bank_transactions.accounts.mappers;
 import com.bank_transactions.accounts.dtos.AccountRequestDto;
 import com.bank_transactions.accounts.dtos.AccountResponseDto;
 import com.bank_transactions.accounts.entities.Account;
-import java.util.UUID;
 
 public class AccountMapper {
     public static Account toEntity(AccountRequestDto dto) {
         Account account = new Account();
-        account.setAccountId(UUID.randomUUID().toString());
+        account.setAccountId(dto.getAccountId());
         account.setAccountNumber(dto.getAccountNumber());
         account.setType(dto.getType());
         account.setBalance(dto.getBalance());

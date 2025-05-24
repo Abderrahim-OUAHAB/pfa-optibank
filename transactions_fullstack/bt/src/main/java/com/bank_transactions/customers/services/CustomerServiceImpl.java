@@ -1,15 +1,16 @@
 package com.bank_transactions.customers.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.bank_transactions.customers.dtos.CustomerRequestDto;
 import com.bank_transactions.customers.dtos.CustomerResponseDto;
 import com.bank_transactions.customers.entities.Customer;
 import com.bank_transactions.customers.mappers.CustomerMapper;
 import com.bank_transactions.customers.repositories.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -30,5 +31,10 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .map(CustomerMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteByCustomerId(String email) {
+        repo.deleteByCustomerId(email);
     }
 }

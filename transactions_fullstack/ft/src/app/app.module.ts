@@ -22,7 +22,9 @@ import { TruncatePipe } from './chat/truncate.pipe';
 import { ChatWrapperComponent } from './chat-wrapper/chat-wrapper.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {MatSnackBarModule} from '@angular/material/snack-bar'; 
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { CustomersComponent } from './customers/customers.component';
+import { AccountsComponent } from './accounts/accounts.component'; 
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +35,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     ChatComponent,
     FilterUserMessagesPipe,
     TruncatePipe,
-    ChatWrapperComponent
+    ChatWrapperComponent,
+    CustomersComponent,
+    AccountsComponent
   ],
   imports: [
     BrowserModule,

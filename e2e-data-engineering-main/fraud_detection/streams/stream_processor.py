@@ -48,9 +48,14 @@ def process_stream(kafka_df, schema, cassandra_connector, fraud_model):
             cassandra_connector.write_transactions(fraudulent, is_fraud=True)
             cassandra_connector.write_transactions(legitimate, is_fraud=False)
             # Mise à jour des statuts pour les transactions frauduleuses
-            for row in fraudulent.select("transactionid").collect():
+            for row in fraudulent.select("transactionid","accountid").collect():
                 cassandra_connector.update_transaction_status(row["transactionid"], is_fraud=True)
-
+                cassandra_connector.create_alert(
+                            account_id=row["accountid"],
+                            message="Transaction frauduleuse détectée"
+                        )
+                cassandra_connector.check_alerts_and_suspend_user(row["accountid"])
+                
             # Mise à jour des statuts pour les transactions légitimes
             for row in legitimate.select("transactionid").collect():
                  cassandra_connector.update_transaction_status(row["transactionid"], is_fraud=False)

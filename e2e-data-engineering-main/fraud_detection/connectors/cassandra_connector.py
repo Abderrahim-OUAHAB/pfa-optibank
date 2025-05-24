@@ -1,19 +1,18 @@
 import logging
-from cassandra.auth import PlainTextAuthProvider
+import uuid
 from cassandra.cluster import Cluster
 from pyspark.sql import DataFrame
 
 logger = logging.getLogger(__name__)
 
 class CassandraConnector:
-    """Gère l'insertion dans Cassandra"""
     def __init__(self, keyspace: str):
         self.keyspace = keyspace
         self.cluster = None
         self.session = None
         self.connect()
         self.setup_schema()
-    
+
     def connect(self):
         try:
             self.cluster = Cluster(["localhost"])
@@ -22,7 +21,7 @@ class CassandraConnector:
         except Exception as e:
             logger.error(f"Erreur de connexion Cassandra: {str(e)}", exc_info=True)
             raise
-    
+
     def setup_schema(self):
         try:
             self.session.execute(f"""
@@ -30,8 +29,7 @@ class CassandraConnector:
                 WITH replication = {{'class': 'SimpleStrategy', 'replication_factor': 1}}
             """)
             self.session.set_keyspace(self.keyspace)
-            
-            # Table pour les transactions légitimes
+
             self.session.execute("""
                 CREATE TABLE IF NOT EXISTS legitimate_transactions (
                     transactionid TEXT PRIMARY KEY,
@@ -53,8 +51,7 @@ class CassandraConnector:
                     is_fraud BOOLEAN
                 )
             """)
-            
-            # Table pour les transactions frauduleuses
+
             self.session.execute("""
                 CREATE TABLE IF NOT EXISTS fraudulent_transactions (
                     transactionid TEXT PRIMARY KEY,
@@ -76,16 +73,24 @@ class CassandraConnector:
                     is_fraud BOOLEAN
                 )
             """)
-            
+
+            self.session.execute("""
+                CREATE TABLE IF NOT EXISTS alerts (
+                    alertid TEXT PRIMARY KEY,
+                    accountid TEXT,
+                    type TEXT,
+                    message TEXT,
+                    severity TEXT,
+                    status TEXT
+                )
+            """)
+
             logger.info(f"Keyspace {self.keyspace} et tables créés avec succès")
         except Exception as e:
             logger.error(f"Erreur lors de la création du keyspace/tables: {str(e)}", exc_info=True)
             raise
 
     def update_transaction_status(self, transaction_id: str, is_fraud: bool):
-        """
-        Met à jour le statut d'une transaction dans la table 'transactions'
-        """
         try:
             status = "REJECTED" if is_fraud else "APPROVED"
             query = f"""
@@ -96,36 +101,71 @@ class CassandraConnector:
             self.session.execute(query)
             logger.info(f"Statut mis à jour pour la transaction {transaction_id} : {status}")
         except Exception as e:
-            logger.error(f"Erreur lors de la mise à jour du statut pour {transaction_id}: {e}", exc_info=True)
-        
+            logger.error(f"Erreur lors de la mise à jour du statut: {str(e)}", exc_info=True)
+
     def write_transactions(self, df: DataFrame, is_fraud: bool) -> bool:
-        """Écrit un DataFrame dans la table appropriée"""
         try:
             if df.rdd.isEmpty():
                 logger.info("Batch vide, aucune écriture nécessaire")
                 return False
-            
-            # Sélectionner uniquement les colonnes existantes dans la table Cassandra
+
             existing_columns = [
                 "transactionid", "accountid", "transactionamount", "transactiondate",
                 "transactiontype", "location", "deviceid", "ipaddress", "merchantid",
                 "accountbalance", "previoustransactiondate", "channel", "customerage",
                 "customeroccupation", "transactionduration", "loginattempts", "is_fraud"
             ]
-            
-            # Filtrer les colonnes du DataFrame pour ne garder que celles qui existent dans la table
+
             df_to_write = df.select([col for col in existing_columns if col in df.columns])
-            
             table_name = "fraudulent_transactions" if is_fraud else "legitimate_transactions"
-            
+
             df_to_write.write \
                 .format("org.apache.spark.sql.cassandra") \
                 .mode("append") \
                 .options(table=table_name, keyspace=self.keyspace) \
                 .save()
-            
+
             logger.info(f"{df_to_write.count()} transactions écrites dans {table_name}")
             return True
         except Exception as e:
-            logger.error(f"Erreur lors de l'écriture dans Cassandra: {str(e)}", exc_info=True)
+            logger.error(f"Erreur lors de l'écriture: {str(e)}", exc_info=True)
             return False
+
+    def create_alert(self, account_id: str, message: str, severity: str = "HIGH", status: str = "UNREAD"):
+        try:
+            alert_id = str(uuid.uuid4())
+            self.session.execute(f"""
+                INSERT INTO {self.keyspace}.alerts (
+                    alertid, accountid, type, message, severity, status
+                ) VALUES (%s, %s, %s, %s, %s, %s)
+            """, (alert_id, account_id, "FRAUD", message, "HIGH", "UNREAD"))
+            logger.info(f"Alerte créée pour compte {account_id}")
+        except Exception as e:
+            logger.error(f"Erreur lors de la création de l'alerte: {e}", exc_info=True)
+
+    def check_alerts_and_suspend_user(self, account_id: str):
+        try:
+            # Récupère l'email depuis la transaction
+            email_result = self.session.execute(f"""
+                SELECT user_email FROM transactions WHERE account_id = %s LIMIT 1 ALLOW FILTERING
+            """, (account_id,))
+            email_row = email_result.one()
+            if not email_row:
+                logger.warning(f"Aucun utilisateur trouvé pour compte {account_id}")
+                return
+
+            user_email = email_row.user_email
+
+            # Compte le nombre d'alertes
+            result = self.session.execute(f"""
+                SELECT COUNT(*) FROM alerts WHERE accountid = %s ALLOW FILTERING
+            """, (account_id,))
+            alert_count = result.one()[0]
+
+            if alert_count >= 5:
+                self.session.execute(f"""
+                    UPDATE users SET status = 'SUSPENDED' WHERE email = %s
+                """, (user_email,))
+                logger.info(f"Utilisateur {user_email} suspendu suite à {alert_count} alertes")
+        except Exception as e:
+            logger.error(f"Erreur dans la suspension utilisateur: {e}", exc_info=True)

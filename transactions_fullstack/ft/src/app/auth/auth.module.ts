@@ -18,6 +18,7 @@ import { MatTableModule } from '@angular/material/table';
 import { PendingComponent } from './pending/pending.component';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { RejectedComponent } from './rejected/rejected.component';
+import { SuspendedComponent } from './suspended/suspended.component';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -25,6 +26,7 @@ import { RejectedComponent } from './rejected/rejected.component';
     UsersComponent,
     PendingComponent,
     RejectedComponent,
+    SuspendedComponent,
   ],
   imports: [
     CommonModule,

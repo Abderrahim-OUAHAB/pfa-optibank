@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NavbarComponent implements OnInit {
   @ViewChild('sidenav') sidenav!: MatSidenav;
+  
   authState: {isAuthenticated: boolean, role: string} = {
     isAuthenticated: false,
     role: ''
@@ -19,10 +20,11 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.authService.authStatus$.subscribe(state => {
       this.authState = state;
-    });
-    this.authService.getUserByEmail(localStorage.getItem('email') || '').subscribe(user => {
+        this.authService.getUserByEmail(localStorage.getItem('email') || '').subscribe(user => {
       this.status = user.status;
     })
+    });
+  
   }
 
   logout() {

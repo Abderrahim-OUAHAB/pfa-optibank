@@ -11,7 +11,7 @@ public class Alert {
 
     @PrimaryKey
     private String alertId;
-
+    private String accountId;
     private String type;
     private String message;
     private String severity;

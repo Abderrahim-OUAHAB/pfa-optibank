@@ -34,6 +34,9 @@ export class AuthService {
           localStorage.setItem('token', response.token);
           localStorage.setItem('role', response.role);
           localStorage.setItem('email', response.email);
+          // this.getUserByEmail(response.email).subscribe(user => {
+          //   localStorage.setItem('status', user.status);
+          // })
           this.authStatus.next({
             isAuthenticated: true,
             role: response.role
@@ -56,6 +59,8 @@ export class AuthService {
       tap(() => {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
+        localStorage.removeItem('email');
+        // localStorage.removeItem('status');
         this.authStatus.next({
             isAuthenticated: false,
             role:''

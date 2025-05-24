@@ -40,6 +40,8 @@ export class LoginComponent {
           }else if (user.status=="REJECTED"){
             this.router.navigate(['/rejected']);
 
+          }else if(user.status=="SUSPENDED"){
+            this.router.navigate(['/suspended']);
           }
             else{
                     this.router.navigate(['/home']);

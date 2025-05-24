@@ -10,6 +10,7 @@ public class AlertMapper {
     public static Alert toEntity(AlertRequestDto dto) {
         Alert e = new Alert();
         e.setAlertId(UUID.randomUUID().toString());
+        e.setAccountId(dto.getAccountId());
         e.setType(dto.getType());
         e.setMessage(dto.getMessage());
         e.setSeverity(dto.getSeverity());
@@ -19,6 +20,7 @@ public class AlertMapper {
     public static AlertResponseDto toResponse(Alert e) {
         AlertResponseDto dto = new AlertResponseDto();
         dto.setAlertId(e.getAlertId());
+        dto.setAccountId(e.getAccountId());
         dto.setType(e.getType());
         dto.setMessage(e.getMessage());
         dto.setSeverity(e.getSeverity());

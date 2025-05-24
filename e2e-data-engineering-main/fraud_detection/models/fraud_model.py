@@ -30,7 +30,7 @@ class FraudDetectionModel:
     def __init__(self, spark):
         self.spark = spark
         self.model = None
-        self.model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fraud_detection_model")
+        self.model_path ="/Users/minfo/Desktop/PFA/e2e-data-engineering-main/fraud_detection_model" #os.path.join(os.path.dirname(os.path.abspath(__file__)), "fraud_detection_model")
         self.redis_client = redis.Redis(
             host='localhost',
             port=6379,

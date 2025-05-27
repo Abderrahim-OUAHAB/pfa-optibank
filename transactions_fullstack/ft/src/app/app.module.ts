@@ -14,6 +14,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgChartsModule } from 'ng2-charts';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,8 +26,8 @@ import { ChatComponent } from './chat/chat.component';
 import { FilterUserMessagesPipe } from './chat/pipes/filter-user-messages.pipe';
 import { TruncatePipe } from './chat/pipes/truncate.pipe';
 import { CustomersComponent } from './customers/customers.component';
+import { DashboardComponent } from './home/dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
-
 
 @NgModule({
   declarations: [
@@ -40,10 +41,11 @@ import { HomeComponent } from './home/home.component';
     TruncatePipe,
     ChatWrapperComponent,
     CustomersComponent,
+    DashboardComponent,
     
   ],
   imports: [
-    BrowserModule,
+    BrowserModule,NgChartsModule,
     AppRoutingModule,
     HttpClientModule,
     MatFormFieldModule,

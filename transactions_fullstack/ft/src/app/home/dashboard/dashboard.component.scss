@@ -1,0 +1,128 @@
+/* Variables globales pour une maintenance facile */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  --success-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --light-gray: #ecf0f1;
+  --white: #ffffff;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+  --border-radius: 8px;
+  --transition: all 0.3s ease;
+}
+
+.dashboard-container {
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+  /* Style universel pour tous les navigateurs */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
+
+  h2 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin: 1.5rem 0;
+    font-size: clamp(1.5rem, 4vw, 2rem); /* Taille responsive */
+    font-weight: 600;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+    width: 100%;
+
+    .stat-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 1.2rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.05);
+
+      &:hover {
+        box-shadow: var(--shadow-md);
+      }
+
+      h3 {
+        color: #7f8c8d;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+      }
+
+      p {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+      }
+
+      &.fraud p {
+        color: var(--danger-color);
+      }
+
+      &.legit p {
+        color: var(--success-color);
+      }
+    }
+  }
+
+  .chart-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    width: 100%;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+
+    .chart-box {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      width: 100%;
+
+      &:hover {
+        box-shadow: var(--shadow-md);
+      }
+
+      h4 {
+        text-align: center;
+        margin-bottom: 1rem;
+        color: var(--secondary-color);
+        font-size: 1.2rem;
+      }
+
+      .chart-container {
+        position: relative;
+        width: 100%;
+        min-height: 300px; /* Hauteur minimum garantie */
+
+        canvas {
+          display: block;
+          width: 100% !important;
+          height: auto !important;
+          aspect-ratio: 4/3; /* Ratio idéal pour les graphiques */
+        }
+      }
+    }
+  }
+}
+
+/* Fallback pour les anciens navigateurs */
+@supports not (aspect-ratio: 4/3) {
+  .chart-container {
+    height: 300px;
+  }
+}

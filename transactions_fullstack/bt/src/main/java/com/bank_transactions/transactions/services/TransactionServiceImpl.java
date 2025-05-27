@@ -53,6 +53,11 @@ public List<TransactionResponseDto> getTransactionsByUserEmail(String userEmail)
         .collect(Collectors.toList());
 }
 
+   @Override
+   public List<TransactionResponseDto> getAll() {
+    return transactionRepository.findAll().stream().map(transactionMapper::toDto).collect(Collectors.toList());
+   }
+
 
  
 }

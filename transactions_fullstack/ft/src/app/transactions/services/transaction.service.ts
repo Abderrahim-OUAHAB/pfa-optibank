@@ -22,4 +22,8 @@ export class TransactionService {
     getTransactionsByUserEmail(userEmail: string): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.apiUrl}/user/${userEmail}`);
   }
+
+  getAllTransactions(): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.apiUrl}/`);
+  }
 }

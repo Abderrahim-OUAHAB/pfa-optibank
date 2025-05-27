@@ -94,7 +94,19 @@
         
   </button>
 </div>
-
+<div class="floating-button">
+  <button
+  *ngIf="role === 'ADMIN'"
+    mat-fab
+    color="primary"
+    aria-label="Dashboard"
+    routerLink="/home/dashboard"
+    class="fab-button"
+  >
+    <mat-icon>dashboard</mat-icon>
+        
+  </button>
+</div>
 <div class="floating-button2">
   <button
     *ngIf="role === 'USER'"

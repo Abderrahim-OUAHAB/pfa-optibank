@@ -10,4 +10,5 @@ public interface TransactionService {
 public TransactionResponseDto createTransaction(TransactionRequestDto request)  ;
 public TransactionResponseDto getTransactionById(String transactionId) ;
 public List<TransactionResponseDto> getTransactionsByUserEmail(String userEmail) ;
+public List<TransactionResponseDto> getAll() ;
 }

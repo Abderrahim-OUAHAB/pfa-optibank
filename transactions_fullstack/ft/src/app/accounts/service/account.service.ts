@@ -25,4 +25,8 @@ export class AccountService {
   updateBalance(accountId: string, balance: number): Observable<any> {
     return this.http.put(`${this.baseUrl}/update/${accountId}/${balance}`, {});
   }
+
+  getAllAccounts(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/`);
+  }
 }

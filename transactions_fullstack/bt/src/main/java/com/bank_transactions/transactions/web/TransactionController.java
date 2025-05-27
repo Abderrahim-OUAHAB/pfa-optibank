@@ -42,5 +42,10 @@ public class TransactionController {
     public List<TransactionResponseDto> getTransactionsByUserEmail(@PathVariable String userEmail) {
         return transactionService.getTransactionsByUserEmail(userEmail);
     }
+
+    @GetMapping("/")
+    public List<TransactionResponseDto> getAll() {
+        return transactionService.getAll();
+    }
     
 }

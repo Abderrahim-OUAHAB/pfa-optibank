@@ -14,6 +14,7 @@ public interface TransactionRepository extends CassandraRepository<Transaction, 
     @Query("SELECT * FROM transactions WHERE transaction_id = ?0")
     Transaction findByTransactionId(String transactionId);
 
+    List<Transaction> findAll();
     @Query("SELECT * FROM transactions WHERE user_email = ?0 ALLOW FILTERING")
     List<Transaction> findByUserEmail(String userEmail);
 }

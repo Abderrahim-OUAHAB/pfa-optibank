@@ -90,18 +90,49 @@ class CassandraConnector:
             logger.error(f"Erreur lors de la création du keyspace/tables: {str(e)}", exc_info=True)
             raise
 
-    def update_transaction_status(self, transaction_id: str, is_fraud: bool):
+    def update_transaction_status(self, transaction_id: str, is_fraud: bool, transaction_amount: float, transaction_type: str):
         try:
             status = "REJECTED" if is_fraud else "APPROVED"
-            query = f"""
+            
+            # D'abord mettre à jour le statut de la transaction
+            self.session.execute(f"""
                 UPDATE {self.keyspace}.transactions 
                 SET status = '{status}' 
                 WHERE transaction_id = '{transaction_id}'
-            """
-            self.session.execute(query)
+            """)
+            
+            # Si la transaction est approuvée, mettre à jour le solde
+            if not is_fraud:
+                # Récupérer le compte associé
+                result = self.session.execute(f"""
+                    SELECT account_id FROM {self.keyspace}.transactions
+                    WHERE transaction_id = '{transaction_id}'
+                """)
+                account_id = result.one().account_id
+                
+                # Déterminer l'opération selon le type de transaction
+                operation = "+" if transaction_type.lower() == "credit" else "-"
+                ancienne_balance = self.session.execute(f"""
+                    SELECT balance FROM {self.keyspace}.accounts
+                    WHERE accountid = '{account_id}'
+                """).one().balance
+                
+                nvbalance=0
+                if(operation == "-"):
+                    nvbalance = ancienne_balance - transaction_amount
+                else:
+                    nvbalance = ancienne_balance + transaction_amount
+                # Mettre à jour le solde
+                self.session.execute(f"""
+                    UPDATE {self.keyspace}.accounts
+                    SET balance = {nvbalance}
+                    WHERE accountid = '{account_id}'
+                """)
+            
             logger.info(f"Statut mis à jour pour la transaction {transaction_id} : {status}")
+            logger.info(f"Solde mis à jour pour le compte {account_id} avec opération {operation}{transaction_amount}")
         except Exception as e:
-            logger.error(f"Erreur lors de la mise à jour du statut: {str(e)}", exc_info=True)
+            logger.error(f"Erreur lors de la mise à jour du statut/solde: {str(e)}", exc_info=True)
 
     def write_transactions(self, df: DataFrame, is_fraud: bool) -> bool:
         try:

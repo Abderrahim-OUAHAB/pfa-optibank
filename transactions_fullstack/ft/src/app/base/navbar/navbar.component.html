@@ -39,6 +39,12 @@
           <a  routerLink="/users" mat-button>
             <mat-icon>group</mat-icon> Clients
           </a>
+        </ng-container>
+          <ng-container *ngIf="authState.role === 'USER'">
+        
+          <a  routerLink="/accounts" mat-button>
+            <mat-icon>person</mat-icon> Mon compte
+          </a>
         </ng-container> 
         <!-- Liens non authentifiés -->
         <ng-container *ngIf="!authState.isAuthenticated">

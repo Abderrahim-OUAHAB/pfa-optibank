@@ -18,4 +18,11 @@ export class CustomersService {
   deleteByEmail(email: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/delete/${email}`);
   }
+  updateCustomer(email: string, customer: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update/${email}`, customer);
+  } 
+
+  findByCustomerId(email: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/find/${email}`);
+  }
 }

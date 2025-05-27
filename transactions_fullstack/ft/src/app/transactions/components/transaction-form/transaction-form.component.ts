@@ -5,6 +5,7 @@ import { TransactionType } from '../../models/transaction-type.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { AccountService } from 'src/app/accounts/service/account.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-transaction-form',
@@ -21,7 +22,8 @@ export class TransactionFormComponent implements OnInit {
     private transactionService: TransactionService,
     private snackBar: MatSnackBar,
     private http: HttpClient,
-    private accountScervice: AccountService
+    private accountScervice: AccountService,
+    private toaster: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +43,12 @@ export class TransactionFormComponent implements OnInit {
     if (this.transactionForm.invalid) return;
     this.accountScervice.findAccountsByCustomerId(this.email).subscribe(accounts => {
       const accountId=accounts.accountId;
-   
+      console.log(accounts)
+      if(accounts.balance<this.transactionForm.value.transactionAmount && this.transactionForm.value.transactionType === 'Debit') {
+        this.toaster.error('Solde insuffisant', 'Error');
+        return
+      }   
+
     // Génération des champs facultatifs
     const formData = {
       ...this.transactionForm.value,
@@ -70,18 +77,11 @@ export class TransactionFormComponent implements OnInit {
         userEmail: this.email || ''
       }).subscribe({
         next: () => {
-          this.snackBar.open('Transaction effectuée avec succès', 'Fermer', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
+          this.toaster.success('Transaction effectuée avec succès', 'Success');
           this.transactionForm.reset();
         },
         error: (err) => {
-          this.snackBar.open(`Erreur lors de la transaction: ${err.message}`, 'Fermer', {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
-          console.error(err);
+         this.toaster.error(err.error.message, 'Error');
         },
         complete: () => {
           this.isLoading = false;

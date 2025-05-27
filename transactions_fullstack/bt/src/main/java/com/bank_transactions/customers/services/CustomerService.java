@@ -9,4 +9,6 @@ public interface CustomerService {
     CustomerResponseDto create(CustomerRequestDto dto);
     List<CustomerResponseDto> getAll();
     void deleteByCustomerId(String email);
+    CustomerResponseDto findByCustomerId(String email);
+    void updateCustomer(String email, CustomerRequestDto dto);
 }

@@ -7,6 +7,7 @@ import { UsersComponent } from './users/users.component';
 import { PendingComponent } from './pending/pending.component';
 import { RejectedComponent } from './rejected/rejected.component';
 import { SuspendedComponent } from './suspended/suspended.component';
+import { DetailCompteComponent } from './detail-compte/detail-compte.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'pending', component: PendingComponent },
    { path: 'rejected', component: RejectedComponent },
     { path: 'suspended', component: SuspendedComponent },
+  {path:'users/detail/:email',component:DetailCompteComponent}
 
 
 ];

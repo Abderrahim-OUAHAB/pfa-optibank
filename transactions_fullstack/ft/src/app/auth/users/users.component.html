@@ -40,8 +40,9 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let u">
-        <button mat-raised-button color="primary" (click)="changeStatus(u.email, 'APPROVED')" [disabled]="u.status === 'APPROVED'">Approuver</button>
-        <button mat-raised-button color="warn" (click)="changeStatus(u.email, 'REJECTED')" [disabled]="u.status === 'REJECTED'">Rejeter</button>
+        <button mat-raised-button color="primary" (click)="changeStatus(u.email, 'APPROVED')" [disabled]="u.status === 'APPROVED'"><i class="fa fa-check"></i> Approuver</button>
+        <button mat-raised-button color="warn" (click)="changeStatus(u.email, 'REJECTED')" [disabled]="u.status === 'REJECTED'"><i class="fa fa-ban"></i> Rejeter</button>
+        <button mat-raised-button color="accent" [routerLink]="['/users/detail', u.email]" [disabled]="u.status !== 'APPROVED'"><i class="fa fa-info-circle"></i> Details</button>
       </td>
     </ng-container>
 

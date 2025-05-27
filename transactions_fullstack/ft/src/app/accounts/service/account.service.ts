@@ -21,4 +21,8 @@ export class AccountService {
   findAccountsByCustomerId(customerId: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/find/${customerId}`);
   }
+
+  updateBalance(accountId: string, balance: number): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update/${accountId}/${balance}`, {});
+  }
 }

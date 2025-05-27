@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Message } from './message.model';
+import { Message } from '../models/message.model';
 @Pipe({
   name: 'filterUserMessages'
 })

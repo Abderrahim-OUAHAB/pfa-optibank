@@ -19,6 +19,7 @@ import { PendingComponent } from './pending/pending.component';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { RejectedComponent } from './rejected/rejected.component';
 import { SuspendedComponent } from './suspended/suspended.component';
+import { DetailCompteComponent } from './detail-compte/detail-compte.component';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -26,7 +27,8 @@ import { SuspendedComponent } from './suspended/suspended.component';
     UsersComponent,
     PendingComponent,
     RejectedComponent,
-    SuspendedComponent,
+    SuspendedComponent,DetailCompteComponent
+
   ],
   imports: [
     CommonModule,

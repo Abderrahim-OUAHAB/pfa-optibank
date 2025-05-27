@@ -37,4 +37,19 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteByCustomerId(String email) {
         repo.deleteByCustomerId(email);
     }
+
+    @Override
+    public CustomerResponseDto findByCustomerId(String email) {
+       return CustomerMapper.toResponse(repo.findByCustomerId(email));
+    }
+    @Override
+        public void updateCustomer(String email, CustomerRequestDto dto) {
+        Customer customer = repo.findById(email).orElseThrow();
+        customer.setFirstName(dto.getFirstName());
+        customer.setLastName(dto.getLastName());
+        customer.setBirthDate(dto.getBirthDate());
+        customer.setPhone(dto.getPhone());
+        customer.setAddress(dto.getAddress());
+        repo.save(customer);
+    }
 }

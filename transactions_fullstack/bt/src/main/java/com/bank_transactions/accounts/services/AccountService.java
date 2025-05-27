@@ -10,4 +10,5 @@ public interface AccountService {
     List<AccountResponseDto> getAll();
     void deleteByCustomerId(String customerId);
     AccountResponseDto findAccountsByCustomerId(String customerId);
+    void updateBalance( String accountId, Double balance);
 }

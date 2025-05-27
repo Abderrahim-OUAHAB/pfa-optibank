@@ -38,4 +38,9 @@ public class AccountController {
     public ResponseEntity<AccountResponseDto> findAccountsByCustomerId(@PathVariable String customerId) {
         return ResponseEntity.ok(service.findAccountsByCustomerId(customerId));
     }
+    @PutMapping("/update/{accountId}/{balance}")
+    public ResponseEntity<Map<String, String>> updateBalance(@PathVariable String accountId, @PathVariable Double balance) {
+        service.updateBalance(accountId, balance);
+        return ResponseEntity.ok(Map.of("message", "Balance updated"));
+    }
 }

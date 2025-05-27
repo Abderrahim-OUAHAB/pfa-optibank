@@ -1,15 +1,16 @@
 package com.bank_transactions.accounts.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.bank_transactions.accounts.dtos.AccountRequestDto;
 import com.bank_transactions.accounts.dtos.AccountResponseDto;
 import com.bank_transactions.accounts.entities.Account;
 import com.bank_transactions.accounts.mappers.AccountMapper;
 import com.bank_transactions.accounts.repositories.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -41,5 +42,10 @@ public class AccountServiceImpl implements AccountService {
    
         return AccountMapper.toResponse(repo.findAccountsByCustomerId(customerId));
 
+    }
+
+    @Override
+    public void updateBalance(String accountId, Double balance) {
+       repo.updateBalance(accountId, balance);
     }
 }

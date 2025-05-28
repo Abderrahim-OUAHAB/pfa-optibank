@@ -26,7 +26,6 @@ import { ChatComponent } from './chat/chat.component';
 import { FilterUserMessagesPipe } from './chat/pipes/filter-user-messages.pipe';
 import { TruncatePipe } from './chat/pipes/truncate.pipe';
 import { CustomersComponent } from './customers/customers.component';
-import { DashboardComponent } from './home/dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 
 @NgModule({
@@ -41,7 +40,6 @@ import { HomeComponent } from './home/home.component';
     TruncatePipe,
     ChatWrapperComponent,
     CustomersComponent,
-    DashboardComponent,
     
   ],
   imports: [

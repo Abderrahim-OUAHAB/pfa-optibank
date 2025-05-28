@@ -1,128 +1,136 @@
-/* Variables globales pour une maintenance facile */
-:root {
-  --primary-color: #3498db;
-  --secondary-color: #2c3e50;
-  --success-color: #2ecc71;
-  --danger-color: #e74c3c;
-  --light-gray: #ecf0f1;
-  --white: #ffffff;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
-  --border-radius: 8px;
-  --transition: all 0.3s ease;
-}
-
 .dashboard-container {
-  padding: 1rem;
-  width: 100%;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-
-  /* Style universel pour tous les navigateurs */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
-  }
+  padding: 24px;
+  position: relative;
 
   h2 {
     text-align: center;
-    color: var(--secondary-color);
-    margin: 1.5rem 0;
-    font-size: clamp(1.5rem, 4vw, 2rem); /* Taille responsive */
-    font-weight: 600;
+    margin-bottom: 24px;
+    color: #3f51b5;
+    font-weight: 500;
+  }
+
+  .search-section {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    align-items: center;
+
+    mat-form-field {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+    }
+
+    button {
+      height: 56px;
+    }
+  }
+
+  .customer-card {
+    margin-bottom: 24px;
+
+    mat-card {
+      mat-icon {
+        vertical-align: middle;
+        margin-right: 8px;
+      }
+    }
   }
 
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
 
-    .stat-card {
-      background: var(--white);
-      border-radius: var(--border-radius);
-      padding: 1.2rem;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
+    mat-card {
       text-align: center;
-      border: 1px solid rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
 
       &:hover {
-        box-shadow: var(--shadow-md);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       }
 
-      h3 {
-        color: #7f8c8d;
-        margin-bottom: 0.5rem;
-        font-size: 1rem;
+      mat-card-title {
+        font-size: 16px;
+        color: #666;
       }
 
       p {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--secondary-color);
+        font-size: 28px;
+        font-weight: 500;
+        margin: 8px 0 0;
+        color: #3f51b5;
       }
 
       &.fraud p {
-        color: var(--danger-color);
+        color: #f44336;
       }
 
       &.legit p {
-        color: var(--success-color);
+        color: #4caf50;
       }
     }
   }
 
   .chart-section {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 24px;
 
-    @media (min-width: 768px) {
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    }
-
-    .chart-box {
-      background: var(--white);
-      border-radius: var(--border-radius);
-      padding: 1rem;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
-      width: 100%;
-
-      &:hover {
-        box-shadow: var(--shadow-md);
-      }
-
-      h4 {
-        text-align: center;
-        margin-bottom: 1rem;
-        color: var(--secondary-color);
-        font-size: 1.2rem;
-      }
+    mat-card {
+      padding: 16px;
 
       .chart-container {
         position: relative;
+        height: 350px;
         width: 100%;
-        min-height: 300px; /* Hauteur minimum garantie */
 
         canvas {
-          display: block;
           width: 100% !important;
-          height: auto !important;
-          aspect-ratio: 4/3; /* Ratio idéal pour les graphiques */
+          height: 100% !important;
         }
       }
     }
   }
+
+  .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
 }
 
-/* Fallback pour les anciens navigateurs */
-@supports not (aspect-ratio: 4/3) {
-  .chart-container {
-    height: 300px;
+@media (max-width: 600px) {
+  .dashboard-container {
+    padding: 16px;
+
+    .search-section {
+      flex-direction: column;
+      
+      mat-form-field {
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+
+    .chart-section {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 }

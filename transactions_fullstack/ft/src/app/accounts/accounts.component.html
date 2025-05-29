@@ -84,4 +84,30 @@
       Mettre à jour le solde
     </button>
   </div>
+
+  <div *ngIf="cardData" class="credit-card">
+  <div class="card-header">
+    <img src="assets/chip.svg" alt="chip" class="chip" />
+    <img src="assets/mastercard.svg" alt="visa" class="logo" />
+  </div>
+
+  <div class="card-number">{{ cardData.cardNumber }}</div>
+  <div class="label-rib">RIB : {{ cardData.cardNumber }}</div>
+
+  <div class="card-footer">
+    <div class="card-holder">
+      <label>Titulaire</label>
+      <div>{{ userData.firstName }} {{ userData.lastName }}</div>
+    </div>
+    <div class="expires">
+      <label>Expiration</label>
+      <div>{{ cardData.expiryDate | date:'MM/yy' }}</div>
+    </div>
+    <div class="cvv">
+      <label>CVV</label>
+      <div>{{ cardData.cvv }}</div>
+    </div>
+  </div>
+</div>
+
 </div>

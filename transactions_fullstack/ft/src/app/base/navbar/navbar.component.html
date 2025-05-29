@@ -40,7 +40,7 @@
             <mat-icon>group</mat-icon> Clients
           </a>
         </ng-container>
-          <ng-container *ngIf="authState.role === 'USER'">
+          <ng-container *ngIf="authState.role === 'USER' && status === 'APPROVED'">
         
           <a  routerLink="/accounts" mat-button>
             <mat-icon>person</mat-icon> Mon compte

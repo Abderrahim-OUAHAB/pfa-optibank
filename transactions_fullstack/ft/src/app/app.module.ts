@@ -28,6 +28,7 @@ import { TruncatePipe } from './chat/pipes/truncate.pipe';
 import { CustomersComponent } from './customers/customers.component';
 import { HomeComponent } from './home/home.component';
 import { AlertsComponent } from './alerts/alerts.component';
+import { CardsComponent } from './cards/cards.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { AlertsComponent } from './alerts/alerts.component';
     ChatWrapperComponent,
     CustomersComponent,
     AlertsComponent,
+    CardsComponent,
     
   ],
   imports: [

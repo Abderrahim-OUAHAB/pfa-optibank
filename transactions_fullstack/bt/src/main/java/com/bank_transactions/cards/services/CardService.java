@@ -7,4 +7,6 @@ import java.util.List;
 public interface CardService {
     CardResponseDto create(CardRequestDto dto);
     List<CardResponseDto> getAll();
+    CardResponseDto getCardByAccountId(String accountId);
+    void deleteByAccountId(String accountId);
 }

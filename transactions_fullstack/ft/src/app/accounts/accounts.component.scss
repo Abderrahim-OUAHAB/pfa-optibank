@@ -115,3 +115,113 @@
     animation: pulse 1.5s infinite;
   }
 }
+
+.credit-card {
+  width: 380px;
+  height: 220px;
+  border-radius: 16px;
+  background: 
+    linear-gradient(135deg, #4a00e0, #8e2de2),
+    url('../../assets/pic.png') center/cover no-repeat ;
+background-blend-mode: overlay;
+opacity: 0.95;
+  color: white;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 30px auto;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .chip {
+      width: 50px;
+    }
+
+    .card-type {
+      font-size: 18px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  }
+
+  .card-number {
+    font-size: 24px;
+    letter-spacing: 2px;
+    margin: 10px 0 10px 0;
+    text-align: center;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+
+    label {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+
+    .card-holder, .expires, .cvv {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+.credit-card {
+
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .chip {
+      width: 45px;
+    }
+
+    .logo {
+      width: 60px;
+      margin-top: 4px;
+    }
+  }
+
+  .card-number {
+    font-size: 22px;
+    letter-spacing: 2px;
+    margin: 10px 0;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .label-rib {
+    text-align: center;
+    font-size: 13px;
+    color: #c1c1c1;
+    margin-bottom: 10px;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+
+    label {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+
+    .card-holder, .expires, .cvv {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+

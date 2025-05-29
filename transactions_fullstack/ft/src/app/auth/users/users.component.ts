@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CustomersService } from 'src/app/customers/service/customers.service';
 import { AccountService } from 'src/app/accounts/service/account.service';
 import { AlertService } from 'src/app/alerts/services/alert.service';
+import { CardService } from 'src/app/cards/service/card.service';
 
 @Component({
   selector: 'app-users',
@@ -25,7 +26,8 @@ users: any[] = []
     private toastr: ToastrService,
     private customerService: CustomersService,
    private accountService: AccountService,
-   private  alertService: AlertService
+   private  alertService: AlertService,
+   private cardService: CardService
   ) {}
 
   ngOnInit() {
@@ -82,8 +84,27 @@ users: any[] = []
               }
             this.accountService.createAccount(account).subscribe(
               (response) => {
-                    this.toastr.success('Client approuvé avec succès', 'Approuver Client')
+                const cardNumber = this.generateCardNumber();
+const cvv = this.generateCVV();
+const expiryDate = this.generateExpiryDate();
+
+const card = {
+  cardNumber,
+  cvv,
+  expiryDate,
+  type: 'DEBIT',
+  status: 'ACTIVE',
+  accountId: id
+};
+
+this.cardService.createCard(card).subscribe(() => {
+  this.toastr.success('Carte créée avec succès', 'Carte Bancaire');
+
+       this.toastr.success('Client approuvé avec succès', 'Approuver Client')
                         this.toastr.success('Compte approuvé avec succès', 'Approuver Compte')
+});
+
+               
               }
             )
       
@@ -95,20 +116,24 @@ users: any[] = []
    
         this.toastr.success('Utilisateur approuvé avec succès', 'Approuver utilisateur')
       } else if (status === 'REJECTED') {
-        this.customerService.deleteByEmail(email).subscribe(() => {
-          this.accountService.deleteByCustomerId(email).subscribe(() => {
-              this.accountService.findAccountsByCustomerId(email).subscribe(data => {
-                this.alertService.deleteAlert(data.accountId).subscribe(() => {
-                  this.toastr.error('Utilisateur rejeté avec succès', 'Rejeter utilisateur')
-              this.toastr.error('Client rejeté avec succès', 'Rejeter Client')
-                })
-              })
-              
-          })
-      
-
+    // 1. D'abord trouver les comptes du client
+    this.accountService.findAccountsByCustomerId(email).subscribe((data: any) => {
+        // 2. Supprimer les cartes associées au compte
+        this.cardService.deleteCardByAccountId(data.accountId).subscribe(() => {
+            // 3. Supprimer les alertes associées au compte
+            this.alertService.deleteAlert(data.accountId).subscribe(() => {
+                // 4. Supprimer le compte lui-même
+                this.accountService.deleteByCustomerId(email).subscribe(() => {
+                    // 5. Enfin supprimer le client
+                    this.customerService.deleteByEmail(email).subscribe(() => {
+                        // Un seul message pour éviter la duplication
+                        this.toastr.error('Client et comptes associés rejetés avec succès', 'Rejet terminé');
+                    });
+                });
+            });
         });
-      }
+    });
+}
       this.loadUsers()
     })
   }
@@ -119,4 +144,29 @@ users: any[] = []
     if (status === 'SUSPENDED') return 'gray'
     return 'orange'
   }
+
+  generateCardNumber(): string {
+  const bin = '531101'; // Prefixe MasterCard fictif
+  let number = bin + this.generateRandomDigits(10);
+  return number;
+}
+
+generateCVV(): string {
+  return this.generateRandomDigits(3);
+}
+
+generateExpiryDate(): string {
+  const now = new Date();
+  const future = new Date(now.getFullYear() + 4, now.getMonth());
+  return future.toISOString().split('T')[0]; // format yyyy-MM-dd
+}
+
+generateRandomDigits(length: number): string {
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += Math.floor(Math.random() * 10).toString();
+  }
+  return result;
+}
+
 }

@@ -4,6 +4,7 @@ import { AuthService } from '../auth/services/auth.service';
 import { AccountService } from './service/account.service';
 import { CustomersService } from '../customers/service/customers.service';
 import {MatFormFieldControl} from '@angular/material/form-field';
+import { CardService } from '../cards/service/card.service';
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
@@ -14,9 +15,9 @@ export class AccountsComponent {
   isAdmin = false
   isEditing = false
   balance = 0
-
+  cardData: any
   constructor(private accountService: AccountService, private auth: AuthService, 
-    private toastr: ToastrService,
+    private toastr: ToastrService,private cardService: CardService,
   private customerService: CustomersService) {}
 
   ngOnInit() {
@@ -27,7 +28,9 @@ export class AccountsComponent {
       this.customerService.findByCustomerId(email).subscribe(customer => {
         this.userData = {...this.userData, ...customer}
       })
-      
+           this.cardService.getCardByAccountId(data.accountId).subscribe(card => {
+        this.cardData = card
+      })
       this.isAdmin = localStorage.getItem('role') === 'ADMIN'
       console.log(this.userData)
     })

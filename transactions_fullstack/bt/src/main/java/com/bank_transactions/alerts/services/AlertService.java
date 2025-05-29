@@ -7,4 +7,7 @@ import java.util.List;
 public interface AlertService {
     AlertResponseDto create(AlertRequestDto dto);
     List<AlertResponseDto> getAll();
+    void updateAlertStatus(String alertId, String status);
+    List<AlertResponseDto> findAlertsByAccountId(String accountId);
+    void deleteByAccountId(String accountId);
 }

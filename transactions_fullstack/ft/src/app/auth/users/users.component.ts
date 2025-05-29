@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { CustomersService } from 'src/app/customers/service/customers.service';
 import { AccountService } from 'src/app/accounts/service/account.service';
+import { AlertService } from 'src/app/alerts/services/alert.service';
 
 @Component({
   selector: 'app-users',
@@ -23,7 +24,8 @@ users: any[] = []
     private userService: AuthService,
     private toastr: ToastrService,
     private customerService: CustomersService,
-   private accountService: AccountService
+   private accountService: AccountService,
+   private  alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -95,8 +97,13 @@ users: any[] = []
       } else if (status === 'REJECTED') {
         this.customerService.deleteByEmail(email).subscribe(() => {
           this.accountService.deleteByCustomerId(email).subscribe(() => {
-              this.toastr.error('Utilisateur rejeté avec succès', 'Rejeter utilisateur')
+              this.accountService.findAccountsByCustomerId(email).subscribe(data => {
+                this.alertService.deleteAlert(data.accountId).subscribe(() => {
+                  this.toastr.error('Utilisateur rejeté avec succès', 'Rejeter utilisateur')
               this.toastr.error('Client rejeté avec succès', 'Rejeter Client')
+                })
+              })
+              
           })
       
 

@@ -21,4 +21,16 @@ public class AlertServiceImpl implements AlertService {
     public List<AlertResponseDto> getAll() {
         return repo.findAll().stream().map(AlertMapper::toResponse).collect(Collectors.toList());
     }
+    @Override
+    public void updateAlertStatus(String alertId, String status) {
+        repo.updateAlertStatus(alertId, status);
+    }
+    @Override
+    public List<AlertResponseDto> findAlertsByAccountId(String accountId) {
+        return repo.findAlertsByAccountId(accountId).stream().map(AlertMapper::toResponse).collect(Collectors.toList());
+    }
+    @Override
+    public void deleteByAccountId(String accountId) {
+        repo.deleteByAccountId(accountId);
+    }
 }

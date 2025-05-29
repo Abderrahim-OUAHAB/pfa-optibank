@@ -14,7 +14,8 @@
 
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCustomer" (optionSelected)="selectCustomer($event.option.value)">
       <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
-        {{ customer.firstName }} {{ customer.lastName }} ({{ customer.email }})
+        {{ customer.firstName }} {{ customer.lastName }} 
+        <!-- ({{ customer.email }}) -->
       </mat-option>
     </mat-autocomplete>
 
@@ -31,7 +32,7 @@
           <mat-icon>person</mat-icon>
           {{ selectedCustomer.firstName }} {{ selectedCustomer.lastName }}
         </mat-card-title>
-        <mat-card-subtitle>{{ selectedCustomer.email }}</mat-card-subtitle>
+        <!-- <mat-card-subtitle>{{ selectedCustomer.email }}</mat-card-subtitle> -->
       </mat-card-header>
     </mat-card>
   </div>

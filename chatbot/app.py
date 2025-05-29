@@ -12,7 +12,6 @@ import requests
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:4200"])
-CSV_PATH = "../e2e-data-engineering-main/dataset/bank_transactions.csv"
 # Configuration du logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -27,7 +26,7 @@ Question:
 {question}
 
 Règles strictes:
-1. Répondez de manière professionnelle et courtoise
+1. Répondez de manière professionnelle et courte
 2. Fournissez des informations exactes sur les produits/services bancaires
 3. Pour les urgences (carte bloquée, fraude...), indiquez immédiatement le numéro dédié
 4. Pour les localisations, proposez toujours l'agence la plus proche
@@ -36,10 +35,6 @@ Règles strictes:
 7. Si la question concerne un problème technique, orientez vers le service client
 8. Pour les questions complexes, proposez un rendez-vous en agence
 
-Exemples de réponses:
-- Pour une carte perdue: "Veuillez immédiatement bloquer votre carte au 0 892 705 705"
-- Pour un virement: "Vous pouvez effectuer un virement via votre application mobile ou en agence"
-- Pour un prêt: "Nos conseillers peuvent vous proposer différentes solutions de financement"
 
 Objectif :
 Fournir une assistance bancaire de qualité en toutes circonstances.

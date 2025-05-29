@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Transaction } from '../../models/transaction.model';
 import { TransactionService } from '../../services/transaction.service';
+import { AlertService } from 'src/app/alerts/services/alert.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-transaction-list',
@@ -25,7 +27,7 @@ export class TransactionListComponent implements OnInit {
 
   displayedColumns = ['transactionId', 'accountId', 'transactionAmount', 'transactionType', 'status', 'transactionDate'];
 
-  constructor(private transactionService: TransactionService) {}
+  constructor(private transactionService: TransactionService,private alertService: AlertService,private toaster: ToastrService) {}
 
   ngOnInit(): void {
     this.transactionService.getTransactionsByUserEmail(this.userEmail).subscribe({
@@ -33,6 +35,17 @@ export class TransactionListComponent implements OnInit {
         this.transactions = data;
         this.filteredTransactions = data;
         this.isLoading = false;
+        const uniqueAccountIds = [...new Set(data.map((t: any) => t.accountId))];
+        uniqueAccountIds.forEach((accountId: any) => {
+          this.alertService.getAlertsByAccount(accountId).subscribe((alerts: any[]) => {
+            alerts
+              .filter(alert => alert.status === 'UNREAD')
+              .forEach(alert => {
+                this.toaster.warning(alert.message, `⚠ Alerte: ${alert.type}`);
+                this.alertService.updateAlert(alert.alertId, 'READ').subscribe();
+              });
+          });
+        });
       },
       error: () => {
         this.isLoading = false;

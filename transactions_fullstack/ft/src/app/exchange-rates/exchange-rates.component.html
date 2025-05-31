@@ -1,0 +1,112 @@
+<!-- exchange-rates.component.html -->
+<mat-card  class="exchange-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h2 class="form-title">Gestion des Taux de Change</h2>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- Formulaire d'ajout/modification -->
+    <mat-card class="form-card" *ngIf="role === 'ADMIN'">
+      <mat-card-header>
+        <mat-card-title>{{ isEditing ? 'Modifier' : 'Ajouter' }} un Taux</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <form (ngSubmit)="saveRate()">
+          <div class="row">
+            <div class="col">
+              <mat-form-field appearance="outline">
+                <mat-label>Devise Source</mat-label>
+                <mat-select [(ngModel)]="newRate.currencyFrom" name="currencyFrom" required>
+                  <mat-option *ngFor="let currency of currencies" [value]="currency">
+                    {{ currency }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col">
+              <mat-form-field appearance="outline">
+                <mat-label>Devise Cible</mat-label>
+                <mat-select [(ngModel)]="newRate.currencyTo" name="currencyTo" required>
+                  <mat-option *ngFor="let currency of currencies" [value]="currency">
+                    {{ currency }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col">
+              <mat-form-field appearance="outline">
+                <mat-label>Taux</mat-label>
+                <input matInput type="number" step="0.0001" [(ngModel)]="newRate.rate" name="rate" required>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button mat-raised-button color="primary" type="submit">
+              {{ isEditing ? 'Mettre à jour' : 'Ajouter' }}
+            </button>
+            <button mat-raised-button color="warn" type="button" (click)="resetForm()" *ngIf="isEditing">
+              Annuler
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Liste des taux -->
+    <mat-card class="list-card">
+      <mat-card-header>
+        <mat-card-title>Liste des Taux de Change</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <table mat-table [dataSource]="rates" class="mat-elevation-z2">
+          <!-- Colonne Devise Source -->
+          <ng-container matColumnDef="from">
+            <th mat-header-cell *matHeaderCellDef>De</th>
+            <td mat-cell *matCellDef="let rate">{{ rate.currencyFrom }}</td>
+          </ng-container>
+
+          <!-- Colonne Devise Cible -->
+          <ng-container matColumnDef="to">
+            <th mat-header-cell *matHeaderCellDef>À</th>
+            <td mat-cell *matCellDef="let rate">{{ rate.currencyTo }}</td>
+          </ng-container>
+
+          <!-- Colonne Taux -->
+          <ng-container matColumnDef="rate">
+            <th mat-header-cell *matHeaderCellDef>Taux</th>
+            <td mat-cell *matCellDef="let rate">{{ rate.rate | number:'1.4-4' }}</td>
+          </ng-container>
+
+          <!-- Colonne Actions -->
+          <ng-container matColumnDef="actions" *ngIf="role === 'ADMIN'">
+            
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let rate">
+              <button mat-icon-button color="primary" (click)="editRate(rate)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteRate(rate.rateId)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </mat-card-content>
+</mat-card>
+
+<!-- <div class="loader">
+  <mat-spinner diameter="50"></mat-spinner>
+  <p>Traitement en cours...</p>
+</div> -->

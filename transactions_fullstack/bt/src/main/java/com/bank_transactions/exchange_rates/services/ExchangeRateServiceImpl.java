@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.bank_transactions.exchange_rates.dtos.ExchangeRateRequestDto;
 import com.bank_transactions.exchange_rates.dtos.ExchangeRateResponseDto;
+import com.bank_transactions.exchange_rates.entities.ExchangeRate;
 import com.bank_transactions.exchange_rates.mappers.ExchangeRateMapper;
 import com.bank_transactions.exchange_rates.repositories.ExchangeRateRepository;
 
@@ -20,5 +21,21 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     }
     public List<ExchangeRateResponseDto> getAll() {
         return repo.findAll().stream().map(ExchangeRateMapper::toResponse).collect(Collectors.toList());
+    }
+
+        public void deleteRate(String rateId) {
+        repo.deleteById(rateId);
+    }
+
+    public ExchangeRate getRateByCurrencies(String from, String to) {
+        return repo.findByCurrencyFromAndCurrencyTo(from, to);
+    }
+    @Override
+    public void updateRate(String rateId, ExchangeRateRequestDto rate) {
+        ExchangeRate e = repo.findById(rateId).orElse(null);
+        e.setCurrencyFrom(rate.getCurrencyFrom());
+        e.setCurrencyTo(rate.getCurrencyTo());
+        e.setRate(rate.getRate());
+        repo.save(e);
     }
 }

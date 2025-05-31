@@ -33,7 +33,7 @@ export class TransactionListComponent implements OnInit {
     this.transactionService.getTransactionsByUserEmail(this.userEmail).subscribe({
       next: (data:any) => {
         this.transactions = data;
-        this.filteredTransactions = data;
+        this.filteredTransactions = data.sort((a: any, b: any) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime());
         this.isLoading = false;
         const uniqueAccountIds = [...new Set(data.map((t: any) => t.accountId))];
         uniqueAccountIds.forEach((accountId: any) => {

@@ -60,7 +60,7 @@
     <div class="col-md-6 mb-3" *ngIf="isAdmin">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Solde</mat-label>
-        <input matInput type="number" [(ngModel)]="balance" name="balance">
+        <input matInput type="number" [readonly]="!isEditing"[(ngModel)]="balance" name="balance">
       </mat-form-field>
     </div>
     <div class="col-md-6 mb-3" *ngIf="!isAdmin">
@@ -79,9 +79,9 @@
     <button mat-raised-button color="accent" *ngIf="isEditing" (click)="saveCustomerInfo()">
     <i class="fa fa-save"></i>  Enregistrer
     </button>
-
+<!-- 
     <button mat-raised-button color="warn" *ngIf="isAdmin" (click)="updateBalance()">
       Mettre à jour le solde
-    </button>
+    </button> -->
   </div>
 </div>

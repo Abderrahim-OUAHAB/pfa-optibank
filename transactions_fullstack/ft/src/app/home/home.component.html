@@ -81,6 +81,11 @@
     </div>
   </div>
 </section>
+
+<!-- <section>
+  <app-exchange-rates></app-exchange-rates>
+</section> -->
+
 <div class="floating-button">
   <button
    *ngIf="role === 'USER'"
@@ -121,3 +126,28 @@
 </div>
 
 <app-chat-wrapper #chatWrapper></app-chat-wrapper>
+
+<div class="floating-button2" *ngIf="role==='ADMIN'">
+  <button
+   
+    mat-fab
+    color="primary"
+    aria-label="exchange-rates"
+    routerLink="/exchange-rates"
+    class="fab-button"
+  >
+    <mat-icon>monetization_on</mat-icon>
+  </button>
+</div>
+<div class="floating-button2" *ngIf="role==='USER'" style="margin-left:70px ;">
+  <button
+   
+    mat-fab
+    color="primary"
+    aria-label="exchange-rates"
+    routerLink="/exchange-rates"
+    class="fab-button"
+  >
+    <mat-icon>monetization_on</mat-icon>
+  </button>
+</div>

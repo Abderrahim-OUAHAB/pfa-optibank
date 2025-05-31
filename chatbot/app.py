@@ -3,13 +3,13 @@ import logging
 from flask import Flask, json, request, jsonify
 from pinecone_utils import init_pinecone, load_data_from_json
 from groq_utils import get_llm
-from langchain.chains import ConversationalRetrievalChain
+from langchain.chains import ConversationalRetrievalChain,LLMChain
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.prompts import PromptTemplate
 from flask_cors import CORS
 import os
 import requests
-
+from cassandra_utils import get_account_by_email, get_last_transactions,get_card_by_account
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:4200"])
 # Configuration du logging
@@ -34,6 +34,7 @@ Règles strictes:
 6. Donnez les numéros de contact appropriés
 7. Si la question concerne un problème technique, orientez vers le service client
 8. Pour les questions complexes, proposez un rendez-vous en agence
+9. Si la question demande une info sur le compte du client, interrogez directement la base Cassandra via la fonction appropriée.
 
 
 Objectif :
@@ -44,6 +45,19 @@ prompt = PromptTemplate(
     template=PROMPT_TEMPLATE,
     input_variables=["context", "question"]
 )
+# PROMPT AGENT INTENTION
+INTENT_PROMPT = PromptTemplate.from_template("""
+Tu es un détecteur d’intention. Ton travail est de classer la question suivante dans une de ces catégories :
+- GET_BALANCE
+- GET_TRANSACTIONS
+- GET_CARD
+- GET_RIB
+- AUTRE
+
+Question : {question}
+
+Réponse (une seule ligne) :
+""")
 
 llm = get_llm()
 vectorstore = init_pinecone()
@@ -63,7 +77,7 @@ qa_chain = ConversationalRetrievalChain.from_llm(
     output_key='answer',
     verbose=True
 )
-
+intent_chain = LLMChain(llm=llm, prompt=INTENT_PROMPT)
 # Fonction Geoapify
 def find_nearest_bank(lat, lon):
     api_key = os.getenv("GEOAPIFY_API_KEY") or "1eaa80850f9f47e28a45b23f50424cd2"
@@ -130,12 +144,48 @@ def initialize_data():
 @app.route('/ask', methods=['POST'])
 def ask():
     data = request.get_json()
+    account = None 
+    txs=None
     if not data:
         return jsonify({"error": "Données JSON manquantes", "status": "error"}), 400
 
     user_input = data.get('message', '')
+    email = data.get('email', None)
+
     if not user_input:
         return jsonify({"error": "Aucun message fourni", "status": "error"}), 400
+    try:
+        intent = intent_chain.run(question=user_input).strip().upper()
+    except:
+        intent = "AUTRE" 
+    if intent == "GET_BALANCE" and email:
+        account = get_account_by_email(email)
+        if account:
+            return jsonify({
+                "answer": f"Votre solde actuel est de {account.balance}DH.",
+                "status": "success"
+            })
+            
+    if intent == ("GET_CARD" or "GET_RIB") and email:
+        card = get_card_by_account(email)
+        if card:
+            return jsonify({
+                "answer": f"Votre RIB est : {card.cardnumber} - cvv : {card.cvv}",
+                "status": "success"
+            })
+            
+    if intent == "GET_TRANSACTIONS" and email:
+        txs = get_last_transactions(email)
+        if txs:
+            formatted = "\n".join([
+                f"* {tx.transaction_amount}DH le {tx.transaction_date.date()} ({tx.transaction_type}): {tx.status}"
+                for tx in txs
+            ])
+            return jsonify({
+                "answer": f"Voici vos {len(txs)} dernières transactions :\n{formatted}",
+                "status": "success"
+            })
+
 
     try:
         # Appel à la chaîne de conversation

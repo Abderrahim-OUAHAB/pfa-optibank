@@ -144,7 +144,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     try {
       const res = await this.http.post<any>(`http://localhost:5000/ask`, {
         message: userMsg.content,
-        location: this.userLocation
+        location: this.userLocation,
+        email: localStorage.getItem('email')
       }).toPromise();
 
       if (res?.answer) {

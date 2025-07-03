@@ -1,0 +1,153 @@
+<div class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Gérez vos finances en toute simplicité</h1>
+      <p>Une expérience bancaire sécurisée, rapide et intuitive à portée de main.</p>
+      <div class="hero-buttons">
+        <a *ngIf="!role" routerLink="/" mat-raised-button color="primary">Se connecter</a>
+        <a *ngIf="!role" routerLink="/register" mat-raised-button color="accent">S'inscrire</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200" style="transform: rotate(180deg);">
+  <defs>
+    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+  </defs>
+  <path 
+    fill="url(#waveGradient)" 
+    fill-opacity="1" 
+    d="M0,0L24,5.3C48,11,96,21,144,58.7C192,96,240,160,288,176C336,192,384,160,432,165.3C480,171,528,213,576,197.3C624,181,672,107,720,90.7C768,75,816,117,864,122.7C912,128,960,96,1008,106.7C1056,117,1104,171,1152,186.7C1200,203,1248,181,1296,149.3C1344,117,1392,75,1416,53.3L1440,32L1440,320L1416,320C1392,320,1344,320,1296,320C1248,320,1200,320,1152,320C1104,320,1056,320,1008,320C960,320,912,320,864,320C816,320,768,320,720,320C672,320,624,320,576,320C528,320,480,320,432,320C384,320,336,320,288,320C240,320,192,320,144,320C96,320,48,320,24,320L0,320Z"
+  />
+</svg> -->
+
+<section class="features">
+  <div class="container">
+    <h2 class="section-title">Fonctionnalités principales</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <mat-icon>account_balance</mat-icon>
+        <h3>Virements instantanés</h3>
+        <p>Envoyez et recevez de l’argent en temps réel vers n’importe quel compte bancaire.</p>
+      </div>
+      <div class="feature-card">
+        <mat-icon>credit_card</mat-icon>
+        <h3>Cards & Paiements</h3>
+        <p>Gestion complète de vos cartes bancaires et suivi des dépenses en temps réel.</p>
+      </div>
+      <div class="feature-card">
+        <mat-icon>lock</mat-icon>
+        <h3>Sécurité maximale</h3>
+        <p>Authentification forte et chiffrement AES-256 pour protéger vos données sensibles.</p>
+      </div>
+      <div class="feature-card">
+        <mat-icon>history</mat-icon>
+        <h3>Historique des transactions</h3>
+        <p>Suivez toutes vos opérations bancaires avec un seul clic, à tout moment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="container">
+    <h2 class="section-title">Pourquoi nous choisir ?</h2>
+    <div class="about-content">
+      <p>
+        Notre plateforme est conçue pour offrir aux utilisateurs une expérience bancaire numérique fluide,
+        intuitive et ultra-sécurisée. Que vous soyez particulier ou professionnel, nos outils modernes
+        vous permettent de gérer votre argent facilement.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="download">
+  <div class="container">
+    <h2 class="section-title">Téléchargez notre application</h2>
+    <p class="section-subtitle">Disponible sur iOS et Android</p>
+    <div class="download-buttons">
+      <button mat-flat-button color="primary">
+        <mat-icon>phone_iphone</mat-icon>
+        App Store
+      </button>
+      <button mat-flat-button color="accent">
+        <mat-icon>android</mat-icon>
+        Google Play
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- <section>
+  <app-exchange-rates></app-exchange-rates>
+</section> -->
+
+<div class="floating-button">
+  <button
+   *ngIf="role === 'USER'"
+    mat-fab
+    color="primary"
+    aria-label="New Transaction"
+    routerLink="/transactions/new"
+    class="fab-button"
+  >
+    <mat-icon>add</mat-icon>
+        
+  </button>
+</div>
+<div class="floating-button">
+  <button
+  *ngIf="role === 'ADMIN'"
+    mat-fab
+    color="primary"
+    aria-label="Dashboard"
+    routerLink="/home/dashboard"
+    class="fab-button"
+  >
+    <mat-icon>dashboard</mat-icon>
+        
+  </button>
+</div>
+<div class="floating-button2">
+  <button
+    *ngIf="role === 'USER'"
+    mat-fab
+    color="primary"
+    aria-label="Chat"
+    (click)="chatWrapper.toggleChat()"
+    class="fab-button"
+  >
+    <mat-icon>chat</mat-icon>
+  </button>
+</div>
+
+<app-chat-wrapper #chatWrapper></app-chat-wrapper>
+
+<div class="floating-button2" *ngIf="role==='ADMIN'">
+  <button
+   
+    mat-fab
+    color="primary"
+    aria-label="exchange-rates"
+    routerLink="/exchange-rates"
+    class="fab-button"
+  >
+    <mat-icon>monetization_on</mat-icon>
+  </button>
+</div>
+<div class="floating-button2" *ngIf="role==='USER'" style="margin-left:70px ;">
+  <button
+   
+    mat-fab
+    color="primary"
+    aria-label="exchange-rates"
+    routerLink="/exchange-rates"
+    class="fab-button"
+  >
+    <mat-icon>monetization_on</mat-icon>
+  </button>
+</div>

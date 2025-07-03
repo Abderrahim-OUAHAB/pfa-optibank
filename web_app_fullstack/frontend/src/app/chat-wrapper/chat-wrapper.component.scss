@@ -1,0 +1,35 @@
+.chat-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.chat-modal {
+  position: fixed;
+  bottom: -100%;
+  right: 10%;
+  width: 1000px;
+  height: 70vh;
+  background-color: white;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  overflow: hidden;
+
+  &.active {
+    bottom: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .chat-modal {
+    width: calc(100% - 40px);
+    right: 50%;
+    left: 50%;
+  }
+}

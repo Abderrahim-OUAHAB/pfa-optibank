@@ -1,0 +1,133 @@
+.login {
+  width: 60%;
+  margin: 70px auto;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #5646e7;
+  .loginhead {
+    margin-top: -40px;
+    margin-bottom: 20px;
+    text-align: center;
+
+    h2 {
+      display: inline-block;
+      padding: 5px 88px;
+      background-color: #5646e7;
+      border-radius: 10px;
+      font-size: 28px;
+      color: #FFF;
+      text-align: center;
+
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .loginfoot {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    flex-direction: column;  /* Adjusts to be vertical on smaller screens */
+
+    button {
+      margin-top: 15px;
+      padding: 0px 30px;
+      font-size: 18px;
+    }
+
+    .signup-link {
+      margin-top: 10px;
+      text-align: center;
+      
+      a {
+        color: #5646e7;
+        font-size: 14px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .login {
+    width: 70%;
+  }
+
+  .loginhead h2 {
+    padding: 5px 60px;
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 992px) {
+  .login {
+    width: 80%;
+  }
+
+  .loginhead h2 {
+    padding: 5px 40px;
+    font-size: 22px;
+  }
+
+  .loginfoot {
+    flex-direction: column;
+    align-items: flex-start;
+
+    button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .signup-link {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .login {
+    width: 90%;
+  }
+
+  .loginhead h2 {
+    padding: 5px 30px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .login {
+    width: 95%;
+    margin: 50px auto;
+    padding: 15px;
+  }
+
+  .loginhead h2 {
+    padding: 5px 20px;
+    font-size: 18px;
+  }
+
+  .loginfoot {
+    button {
+      font-size: 14px;
+    }
+
+    .signup-link {
+      font-size: 14px;
+    }
+  }
+}
+
+.alert-danger {
+  background-color: #f44336c4;
+  color: #FFF;
+  margin-top: 15px;
+  font-size: 18px;
+}

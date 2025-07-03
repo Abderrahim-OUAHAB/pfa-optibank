@@ -1,0 +1,104 @@
+/* exchange-rates.component.scss */
+.exchange-card {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+  .form-title {
+    color: #5646e7;
+    font-weight: 500;
+    font-size: 1.8rem;
+  }
+}
+
+.form-card, .list-card {
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  
+  mat-card-header {
+    background-color: #f5f7ff;
+    border-radius: 8px 8px 0 0;
+    padding: 1rem;
+    
+    mat-card-title {
+      color: #5646e7;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  
+  .col {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+
+  th {
+    background-color: #5646e7;
+    color: white;
+    font-weight: 500;
+  }
+
+  td {
+    padding: 1rem;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover {
+    background-color: #f0f0f0;
+  }
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #5646e7;
+  
+  mat-spinner {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .exchange-card {
+    padding: 1rem;
+    width: 95%;
+  }
+  
+  .col {
+    min-width: 100%;
+  }
+  
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}

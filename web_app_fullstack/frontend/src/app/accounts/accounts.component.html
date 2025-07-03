@@ -1,0 +1,113 @@
+<div class="account-details-card" *ngIf="userData">
+  <div class="header text-center mb-3" style="text-align: center;">
+    <mat-icon>account_circle</mat-icon>
+    <h2>Détails du Compte</h2>
+  </div>
+
+  <div class="content row">
+<div class="col-md-6 mb-3">
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Identifiant du compte</mat-label>
+    <input matInput [value]="userData.accountId" readonly name="accountId" disabled #accountIdInput>
+    <button mat-icon-button matSuffix (click)="copyToClipboard(accountIdInput.value)" aria-label="Copier">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+    <div class="col-md-6 mb-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Email</mat-label>
+        <input matInput [value]="userData.email" readonly name="email" disabled>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Nom</mat-label>
+        <input matInput [(ngModel)]="userData.lastName" [readonly]="!isEditing" name="lastName">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Prénom</mat-label>
+        <input matInput [(ngModel)]="userData.firstName" [readonly]="!isEditing" name="firstName">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Téléphone</mat-label>
+        <input matInput [(ngModel)]="userData.phone" [readonly]="!isEditing" name="phone">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Adresse</mat-label>
+        <input matInput [(ngModel)]="userData.address" [readonly]="!isEditing" name="address">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Date de naissance</mat-label>
+        <input matInput type="date" [(ngModel)]="userData.birthDate" [readonly]="!isEditing" name="birthDate">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6 mb-3" *ngIf="isAdmin">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Solde</mat-label>
+        <input matInput type="number" [(ngModel)]="balance" name="balance">
+      </mat-form-field>
+    </div>
+    <div class="col-md-6 mb-3" *ngIf="!isAdmin">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Solde</mat-label>
+        <input matInput type="number" [(ngModel)]="balance" name="balance" disabled>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- <div class="actions text-center mt-4">
+    <button mat-raised-button color="primary" *ngIf="!isEditing && !isAdmin" (click)="isEditing = true">
+     <i class="fa fa-edit"></i> Modifier mes infos
+    </button>
+
+    <button mat-raised-button color="accent" *ngIf="isEditing" (click)="saveCustomerInfo()">
+    <i class="fa fa-save"></i>  Enregistrer
+    </button>
+
+    <button mat-raised-button color="warn" *ngIf="isAdmin" (click)="updateBalance()">
+      Mettre à jour le solde
+    </button>
+  </div> -->
+
+  <div *ngIf="cardData" class="credit-card">
+  <div class="card-header">
+    <img src="assets/chip.svg" alt="chip" class="chip" />
+    <img src="assets/mastercard.svg" alt="visa" class="logo" />
+  </div>
+
+  <div class="card-number">{{ cardData.cardNumber }}</div>
+  <div class="label-rib">RIB : {{ cardData.cardNumber }}</div>
+
+  <div class="card-footer">
+    <div class="card-holder">
+      <label>Titulaire</label>
+      <div>{{ userData.firstName }} {{ userData.lastName }}</div>
+    </div>
+    <div class="expires">
+      <label>Expiration</label>
+      <div>{{ cardData.expiryDate | date:'MM/yy' }}</div>
+    </div>
+    <div class="cvv">
+      <label>CVV</label>
+      <div>{{ cardData.cvv }}</div>
+    </div>
+  </div>
+</div>
+
+</div>

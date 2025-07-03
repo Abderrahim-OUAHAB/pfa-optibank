@@ -1,0 +1,26 @@
+# Core dependencies
+apache-airflow==2.6.0  
+
+# Kafka
+kafka-python==2.0.2
+confluent-kafka==2.1.1
+
+# Spark
+pyspark==3.4.1
+py4j==0.10.9.7
+
+# Database
+cassandra-driver==3.28.0
+psycopg2-binary==2.9.6  
+
+
+
+# Data processing
+pandas==2.0.3
+pyarrow==12.0.1
+
+# Utilitaires
+python-dateutil==2.8.2
+pytz==2023.3
+click==8.1.7
+colorlog==4.8.0

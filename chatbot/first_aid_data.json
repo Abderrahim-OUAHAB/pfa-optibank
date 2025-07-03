@@ -1,0 +1,16 @@
+[
+  {
+    "text": "En cas de perte ou vol de carte, composez immédiatement le +212632394897 pour bloquer votre carte.",
+    "metadata": {
+      "type": "emergency",
+      "service": "card_blocking"
+    }
+  },
+  {
+    "text": "Nos agences sont ouvertes du lundi au vendredi de 9h à 17h, et le samedi de 9h à 12h.",
+    "metadata": {
+      "type": "information",
+      "category": "opening_hours"
+    }
+  }
+]

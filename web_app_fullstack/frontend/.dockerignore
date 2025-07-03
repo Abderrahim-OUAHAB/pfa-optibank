@@ -1,0 +1,8 @@
+**/node_modules
+**/.angular
+**/.vscode
+**/.git
+**/.env
+**/*.md
+**/dist/*  
+**/tsconfig.*.json

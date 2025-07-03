@@ -1,0 +1,101 @@
+<div class="chat-container">
+  <!-- Sidebar gauche -->
+  <div class="chat-sidebar left">
+    <div class="sidebar-content">
+      <h2>Discussion précédente</h2>
+      <div class="search-container">
+        <mat-icon>search</mat-icon>
+        <input 
+          type="text" 
+          placeholder="Rechercher dans les discussions" 
+          [(ngModel)]="search"
+        />
+      </div>
+
+      <div class="message-history">
+        <div 
+          *ngFor="let msg of filteredMessages | filterUserMessages" 
+          class="message-preview"
+        >
+          <p>{{ msg.content | truncate:50 }}</p>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zone de chat principale -->
+  <div class="chat-main">
+    <!-- En-tête -->
+    <div class="chat-header">
+      <img src="assets/profIMG.png" alt="Profile" class="profile-img">
+      <div>
+        <h3>BANBot</h3>
+        <p>Bienvenue, comment puis-je vous aider ?</p>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="messages-container">
+      <div *ngFor="let msg of messages" class="message-bubble" [class.user]="msg.role === 'user'">
+        <img 
+          *ngIf="msg.role === 'bot'" 
+          src="assets/profIMG.png" 
+          alt="bot" 
+          class="avatar"
+        >
+        <div class="message-content" [innerHTML]="formatMessageContent(msg.content)"></div>
+        <img 
+          *ngIf="msg.role === 'user'" 
+          src="assets/user.svg" 
+          alt="user" 
+          class="avatar"
+        >
+      </div>
+
+      <div *ngIf="isLoading" class="loading-indicator">
+        <img src="assets/profIMG.png" alt="bot" class="avatar">
+        <div class="typing-animation">
+          <span>.</span><span>.</span><span>.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saisie -->
+    <div class="input-container">
+      <div *ngIf="locationError" class="error-message">
+        {{ locationError }}
+      </div>
+      <div class="input-wrapper">
+        <input 
+          type="text" 
+          [(ngModel)]="input" 
+          placeholder="Entrez votre message..." 
+          (keydown.enter)="handleSend()"
+        >
+        <button mat-icon-button (click)="handleSend()" [disabled]="isLoading">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar droit -->
+  <div class="chat-sidebar right">
+    <div class="sidebar-content">
+      <div class="profile-section">
+        <img src="assets/profIMG.png" alt="Profile" class="profile-large">
+        <h3>BANBot</h3>
+        <p>Assistant des questions banquaire !</p>
+      </div>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="handleNewConversation()"
+        [disabled]="isLoading"
+      >
+        Nouvelle discussion
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+### backend ###
+
+transactions_fullstack/bt/HELP.md
+transactions_fullstack/bt/target/
+transactions_fullstack/bt/!.mvn/wrapper/maven-wrapper.jar
+transactions_fullstack/bt/!**/src/main/**/target/
+transactions_fullstack/bt/!**/src/test/**/target/
+
+### STS ###
+transactions_fullstack/bt/.apt_generated
+transactions_fullstack/bt/.classpath
+transactions_fullstack/bt/.factorypath
+transactions_fullstack/bt/.project
+transactions_fullstack/bt/.settings
+transactions_fullstack/bt/.springBeans
+transactions_fullstack/bt/.sts4-cache
+
+### IntelliJ IDEA ###
+transactions_fullstack/bt/.idea
+transactions_fullstack/bt/*.iws
+transactions_fullstack/bt/*.iml
+transactions_fullstack/bt/*.ipr
+### NetBeans ###
+transactions_fullstack/bt/nbproject/private/
+transactions_fullstack/bt/nbbuild/
+transactions_fullstack/bt/dist/
+transactions_fullstack/bt/nbdist/
+transactions_fullstack/bt/.nb-gradle/
+transactions_fullstack/bt/build/
+transactions_fullstack/bt/!**/src/main/**/build/
+transactions_fullstack/bt/!**/src/test/**/build/
+
+### VS Code ###
+transactions_fullstack/bt/.vscode/
+
+### frontend ###
+
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Compiled output
+transactions_fullstack/ft/dist
+transactions_fullstack/ft/tmp
+transactions_fullstack/ft/out-tsc
+transactions_fullstack/ft/bazel-out
+
+# Node
+transactions_fullstack/ft/node_modules
+transactions_fullstack/ft/npm-debug.log
+transactions_fullstack/ft/yarn-error.log
+
+# IDEs and editors
+transactions_fullstack/ft/.idea/
+transactions_fullstack/ft/.project
+transactions_fullstack/ft/.classpath
+transactions_fullstack/ft/.c9/
+transactions_fullstack/ft/*.launch
+transactions_fullstack/ft/.settings/
+transactions_fullstack/ft/*.sublime-workspace
+
+# Visual Studio Code
+transactions_fullstack/ft/.vscode/*
+transactions_fullstack/ft/!.vscode/settings.json
+transactions_fullstack/ft/!.vscode/tasks.json
+transactions_fullstack/ft/!.vscode/launch.json
+transactions_fullstack/ft/!.vscode/extensions.json
+transactions_fullstack/ft/.history/*
+
+# Miscellaneous
+transactions_fullstack/ft/.angular/cache
+transactions_fullstack/ft/.sass-cache/
+transactions_fullstack/ft/connect.lock
+transactions_fullstack/ft/coverage
+transactions_fullstack/ft/libpeerconnection.log
+transactions_fullstack/ft/testem.log
+transactions_fullstack/ft/typings
+
+# System files
+transactions_fullstack/ft/.DS_Store
+transactions_fullstack/ft/Thumbs.db
+
+### opt ###
+
+/opt
+
+### streaming ###
+
+e2e-data-engineering-main/venv
+e2e-data-engineering-main/dags/__pycache__
+e2e-data-engineering-main/.idea
+e2e-data-engineering-main/script
+
+### chatbot ###
+
+chatbot/venv
+
+chatbot/.env
+
+.dist
+
+.DS_Store
+
+docx

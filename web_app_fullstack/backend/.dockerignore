@@ -1,0 +1,9 @@
+**/.git
+**/target/
+**/.mvn/
+**/mvnw*
+**/.gitignore
+**/HELP.md
+**/*.cmd
+**/*.md
+**/src/test/

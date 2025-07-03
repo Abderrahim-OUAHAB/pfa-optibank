@@ -1,0 +1,68 @@
+/* Styles généraux */
+.custom-toolbar {
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-right: 16px;
+  cursor: pointer;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 2px solid white;
+}
+
+.app-name {
+  font-weight: 500;
+  font-size: 1.3rem;
+  color: white;
+  letter-spacing: 1px;
+}
+
+.menu-spacer {
+  flex: 1 1 auto;
+}
+
+/* Boutons */
+.desktop-menu button {
+  margin: 0 5px;
+  color: white;
+}
+
+.desktop-menu button mat-icon {
+  margin-right: 5px;
+}
+
+/* Menu mobile */
+mat-sidenav {
+  width: 250px;
+  background: linear-gradient(180deg, rgb(46, 45, 45), #5646e7);
+}
+
+mat-nav-list a {
+  color: white;
+}
+
+mat-nav-list mat-icon {
+  margin-right: 10px;
+}
+
+/* Menu utilisateur */
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+a{
+  color: white !important; 
+}

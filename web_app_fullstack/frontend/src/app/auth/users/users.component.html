@@ -1,0 +1,56 @@
+<div *ngIf="isLoading" class="loader">Chargement des utilisateurs...</div>
+
+<div class="transaction-list" *ngIf="!isLoading">
+  <h2 class="list-header">Gestion des utilisateurs</h2>
+
+  <div class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Rechercher (nom, email...)</mat-label>
+      <input matInput [(ngModel)]="searchTerm" (input)="applyFilters()" placeholder="Rechercher...">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Statut</mat-label>
+      <mat-select [(ngModel)]="filterStatus" (selectionChange)="applyFilters()">
+        <mat-option value="">Tous</mat-option>
+        <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <table mat-table [dataSource]="filteredUsers" class="mat-elevation-z2">
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let u">{{ u.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nom</th>
+      <td mat-cell *matCellDef="let u">{{ u.firstName }} {{ u.lastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Statut</th>
+      <td mat-cell *matCellDef="let u" [ngStyle]="{'color': getColor(u.status)}">
+        {{ u.status }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let u">
+        <button mat-raised-button color="primary" (click)="changeStatus(u.email, 'APPROVED')" [disabled]="u.status === 'APPROVED'"><i class="fa fa-check"></i> Approuver</button>
+        <button mat-raised-button color="warn" (click)="changeStatus(u.email, 'REJECTED')" [disabled]="u.status === 'REJECTED'"><i class="fa fa-ban"></i> Rejeter</button>
+        <button mat-raised-button color="accent" [routerLink]="['/users/detail', u.email]" [disabled]="u.status !== 'APPROVED'"><i class="fa fa-info-circle"></i> Details</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+  </table>
+
+  <div *ngIf="filteredUsers.length === 0" class="empty-message">
+    Aucun utilisateur trouvé
+  </div>
+</div>
